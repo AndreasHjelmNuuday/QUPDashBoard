@@ -29,5 +29,7 @@ namespace DotJira
         [JsonProperty(Constants.PARENT_CUSTOM_FIELD_ID)]
         public string Parent { get; set; }
 
+        [JsonProperty("issuelinks")]
+        public List<LinkedIssue> linkedIssues { get; set; } = new List<LinkedIssue>();
     }
 }

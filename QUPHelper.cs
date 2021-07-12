@@ -19,8 +19,10 @@ namespace DotJira
         public List<Issue> GetAllQUPIssuesInProject(string project, string qup)
         {
             Connect();
-            string jql = String.Format("project = {0} AND issuetype in (\"Tribe Objective\", \"Squad Objective\") AND QUP = \"{1}\" ORDER BY Rank ASC", project, qup);
-            //string jql = String.Format("project = {0} AND issuetype in (\"Tribe Objective\", \"Squad Objective\", Initiative, Epic) AND QUP = \"{1}\" ORDER BY Rank ASC", project, qup);
+          
+            string jql = String.Format("project = {0} AND issuetype in (\"Tribe Objective\", \"Squad Objective\", Epic) AND (QUP = \"{1}\" OR issueFunction in linkedIssuesOf(\"QUP = '{1}'\", \"is implemented by\")OR issueFunction in portfolioChildrenOf(\"QUP = '{1}'\")) ORDER BY Rank ASC", project, qup);
+            
+            //string jql = String.Format("project = {0} AND issuetype in (\"Tribe Objective\", \"Squad Objective\", Epic) AND QUP = \"{1}\" ORDER BY Rank ASC", project, qup);
 
             System.Collections.Generic.List<string> fields = new System.Collections.Generic.List<string>(new string[] {
                 "summary",
@@ -28,6 +30,7 @@ namespace DotJira
                 Constants.RAG_CUSTOM_FIELD_ID,
                 Constants.PARENT_CUSTOM_FIELD_ID,
                 Constants.ISSUE_TYPE_ID,
+                "issuelinks",
                 "status"
             }); ;
 
@@ -52,6 +55,7 @@ namespace DotJira
         {
             List<Issue> tribeObjectives = new List<Issue>();
             List<Issue> squadObjectives = new List<Issue>();
+            List<Issue> epics = new List<Issue>();
             List<Issue> issues = GetAllQUPIssuesInProject(project, quarter);
 
             foreach (Issue issue in issues)
@@ -66,28 +70,43 @@ namespace DotJira
                     {
                         squadObjectives.Add(issue);
                     }
+                    else if (issue.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_Epic))
+                    {
+                        epics.Add(issue);
+                    }
                 }
             }
 
-            sortSquadObjectives(tribeObjectives, squadObjectives);
+            sortChildren(tribeObjectives, squadObjectives);
+            sortChildren(squadObjectives, epics);
             return tribeObjectives;
         }
 
-        private static void sortSquadObjectives(List<Issue> tribeObjectives, List<Issue> squadObjectives)
+        private static void sortChildren(List<Issue> parents, List<Issue> children)
         {
-            foreach (Issue squadObjective in squadObjectives)
+            foreach (Issue childIssue in children)
             {
-                string parent = squadObjective.Fields.Parent;
-                Issue parentTribeObjective = tribeObjectives.Find(i => i.Key.Equals(parent));
-                if (parentTribeObjective != null)
-                {
-                    if(parentTribeObjective.Children == null)
+                string parent = childIssue.Fields.Parent;
+                Issue parentIssue = parents.Find(i => i.Key.Equals(parent));
+                if (parentIssue != null)
+                {                
+                    parentIssue.Children.Add(childIssue);                    
+                }
+                else if (parentIssue == null) //Epic linked by Implements
+                {   
+                    if(childIssue.Fields.linkedIssues.Count > 0)
                     {
-                        parentTribeObjective.Children = new List<Issue>();
-                    }
-                    parentTribeObjective.Children.Add(squadObjective);
+                        foreach (LinkedIssue linked in childIssue.Fields.linkedIssues) {
+
+                            if (linked.OutwardIssue != null && linked.LinkType.name.Equals(Constants.LINK_TYPE_IMPLEMENTATION_ID))
+                            {
+                                parentIssue = parents.Find(i => i.Key.Equals(linked.OutwardIssue.Key));
+                                parentIssue.IsImplementedBy.Add(childIssue);
+                            }
+                        }                        
+                    }                    
                 }
             }
-        }
+        }       
     }
 }

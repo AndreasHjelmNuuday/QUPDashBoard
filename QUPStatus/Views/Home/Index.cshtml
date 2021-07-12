@@ -1,11 +1,5 @@
 ﻿@using DotJira;
 @model IEnumerable<Issue>
-@{
-    ViewData["Title"] = "Home Page";
-
-}
-
-
 @{ 
     string colorCardBasedOnRAG(Issue issue)
     {
@@ -19,11 +13,11 @@
             else if (issue.Fields.RAG.Value.Contains("Amber"))
             {
 
-                color = "yellow";
+                color = "orange";
             }
             else if (issue.Fields.RAG.Value.Contains("Red"))
             {
-                color = "red";
+                color = "darkred";
             }
         }
         return color;
@@ -36,7 +30,7 @@
         String status = issue.Fields.Status.Name;
         string color = "white";
         if (status.Contains("New")) {
-            color = "grey";
+            color = "white";
         }
         else if (status.Contains("Accepted Idea")){
             color = "grey";
@@ -55,45 +49,68 @@
      return color;
     }
 }
-<div style="padding-left: 5%">
+
+@{ 
+
+    string issueTypeColor(Issue issue)
+    {
+        String color = "white";
+
+        if(issue.Fields.Type.Name.Equals("Tribe Objective"))
+        {
+            color = "#5BFE60";
+        }
+        else if(issue.Fields.Type.Name.Equals("Squad Objective"))
+        {
+            color = "#FFA0FF";
+        }
+        return color;
+    }
+}
     @foreach (Issue tribeObjective in Model.ToList())
     {
-    <div style="float:left; position:relative; " >
+    <div 
+    style="float:left; 
+    position:relative; 
+    " >
         <div style="        background: @colorCardBasedOnRAG(tribeObjective);
         text-wrap: normal;
         width: 200px;
-        height: 300px;
+        height: 200px;
         border: solid;
         margin: 2px;
     ">
 
-            <div>
-                <img src="@tribeObjective.Fields.Type.IconUrl" />
-                @tribeObjective.Key
-            </div>
-            <div style="background: @colorStatus(tribeObjective)">
-                @tribeObjective.Fields.Status.Name
-            </div>
-            <div><b>@tribeObjective.Fields.Summary</b></div>
-            <div>
-                @if (tribeObjective.Fields.RAG != null)
-                {@tribeObjective.Fields.RAG.Value}
-            </div>
-
+        <div style="
+        background: @issueTypeColor(tribeObjective);
+        ">
+            <img src="@tribeObjective.Fields.Type.IconUrl" style="border: 1px solid black;" />
+            @tribeObjective.Key
         </div>
-        @foreach (Issue squadObjective in tribeObjective.Children)
-        {
+        <div style="background: @colorStatus(tribeObjective)">
+            @tribeObjective.Fields.Status.Name
+        </div>
+        <div><b>@tribeObjective.Fields.Summary</b></div>
+        <div>
+            @if (tribeObjective.Fields.RAG != null)
+            {@tribeObjective.Fields.RAG.Value}
+        </div>
 
+    </div>
+    @foreach (Issue squadObjective in tribeObjective.Children)
+    {
     <div style="
             background: @colorCardBasedOnRAG(squadObjective);
             text-wrap: normal;
             width: 200px;
-            height: 300px;
+            height: 200px;
             border: solid;
-            margin: 2px;
+            margin: 2px;            
         ">
-        <div>
-            <img src="@squadObjective.Fields.Type.IconUrl" />
+        <div style="
+        background: @issueTypeColor(squadObjective);
+        ">
+            <img src="@squadObjective.Fields.Type.IconUrl" style="border: 1px solid black;" />
             @squadObjective.Key
         </div>
         <div style="background: @colorStatus(squadObjective)">
@@ -104,10 +121,7 @@
             @if (squadObjective.Fields.RAG != null)
             {@squadObjective.Fields.RAG.Value}
         </div>
-
     </div>
-
         }
     </div>
     }
-</div>

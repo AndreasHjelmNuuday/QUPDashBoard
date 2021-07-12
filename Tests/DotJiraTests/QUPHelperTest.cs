@@ -10,6 +10,7 @@ namespace DotJira
 {
     class QUPHelperTest
     {
+        
         QUPHelper qup;
         [SetUp]
         public void Setup()
@@ -35,7 +36,7 @@ namespace DotJira
         [Test]
         public void getAllQUPIssuesInMUSICProject()
         {
-            string project = "Music";
+            string project = "MUSIC";
             string quarter = "2021 Q2";
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
             Assert.NotNull(issues);
@@ -44,7 +45,7 @@ namespace DotJira
         [Test]
         public void TeamFieldIsSet()
         {
-            string project = "Music";
+            string project = "MUSIC";
             string quarter = "2021 Q2";
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
             Issue issueWithTeamName = issues.Find(i => !i.Fields.Team.Equals(null));
@@ -53,7 +54,7 @@ namespace DotJira
         [Test]
         public void RAGFieldIsSet()
         {
-            string project = "Music";
+            string project = "MUSIC";
             string quarter = "2021 Q2";
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
             Issue issueWithRagSet = issues.Find(i => i.Fields.RAG != null && i.Fields.RAG.Value.Contains("Green"));
@@ -63,7 +64,7 @@ namespace DotJira
         [Test]
         public void IssueTypeIsSet()
         {
-            string project = "Music";
+            string project = "MUSIC";
             string quarter = "2021 Q2";
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
             Issue issueWithTypeSet = issues.Find(i => i.Fields != null && i.Fields.Type != null && i.Fields.Type.Name.Contains("Tribe Objective"));
@@ -72,7 +73,7 @@ namespace DotJira
         [Test]
         public void IssueIconUrlIsSet()
         {
-            string project = "Music";
+            string project = "MUSIC";
             string quarter = "2021 Q2";
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
             Issue issueWithIconUrlSet = issues.Find(i => i.Fields != null && i.Fields.Type != null && i.Fields.Type.IconUrl != null);
@@ -82,7 +83,7 @@ namespace DotJira
         [Test]
         public void ParentIsSet()
         {
-            string project = "Music";
+            string project = "MUSIC";
             string quarter = "2021 Q2";
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
             Issue issueWithParentSet = issues.Find(i => i.Fields != null && i.Fields.Parent != null);
@@ -90,17 +91,86 @@ namespace DotJira
         }
 
         [Test]
+        public void LinkedIssuesIsSet()
+        {
+            string project = "MUSIC";
+            string quarter = "2021 Q2";
+            List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
+            Issue issue = issues.Find(i => i.Fields != null && i.Fields.linkedIssues.Count != 0);
+            Assert.NotNull(issue);
+        }
+        [Test]
         public void TribeObjectivesAreSortedWithSquadObejctivesAsChildren()
         {
-            string project = "Music";
+            string project = "MUSIC";
             string quarter = "2021 Q2";
             List<Issue> issues = qup.getAllQupIssuesSorted(project, quarter);
 
             Assert.Greater(issues.Count, 0);
             foreach (Issue issue in issues)
             {
-                Assert.AreEqual(issue.Fields.Type.Name, "Tribe Objective");
+                Assert.AreEqual("Tribe Objective", issue.Fields.Type.Name);
                 Assert.NotNull(issue.Children);
+            }
+        }
+
+        [Test]
+        public void AllEpicsThatAreChildrenToASquadObjectiveAreFound()
+        {
+            string project = "MUSIC";
+            string quarter = "2021 Q3";
+            List<Issue> issues = qup.getAllQupIssuesSorted(project, quarter);
+
+            Assert.Greater(issues.Count, 0);
+            foreach (Issue tribeObjective in issues)
+            {
+                Assert.AreEqual(tribeObjective.Fields.Type.Name, "Tribe Objective");
+                if (tribeObjective.Children != null)
+                {
+                    foreach (Issue squadObjective in tribeObjective.Children)
+                    {
+                        Assert.AreEqual(squadObjective.Fields.Type.Name, "Squad Objective");
+                        Assert.NotNull(squadObjective.Children);                        
+                            foreach (Issue epic in squadObjective.Children)
+                            {
+                                Assert.AreEqual("Epic", epic.Fields.Type.Name);
+                            }                        
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void AllEpicsThatAreLinkedByImplemented()
+        {
+            string project = "MUSIC";
+            string quarter = "2021 Q3";
+            const string squadObjectiveKey = "MUSIC-9585";
+            const string epicKey = "MUSIC-9492";
+            
+        List<Issue> issues = qup.getAllQupIssuesSorted(project, quarter);
+
+            Assert.Greater(issues.Count, 0);
+            foreach (Issue tribeObjective in issues)
+            {
+                Assert.AreEqual(tribeObjective.Fields.Type.Name, "Tribe Objective");
+                if (tribeObjective.Children != null)
+                {
+                    foreach (Issue squadObjective in tribeObjective.Children)
+                    {
+                        Assert.AreEqual(squadObjective.Fields.Type.Name, "Squad Objective");
+                        Assert.NotNull(squadObjective.IsImplementedBy);                        
+                        foreach (Issue epic in squadObjective.IsImplementedBy)
+                        {                            
+                            if (epic.Key.Equals(epicKey))
+                            {
+                                Assert.AreEqual(squadObjectiveKey, squadObjective.Key); 
+                                Assert.NotNull(squadObjective.IsImplementedBy);
+                                Assert.NotNull(squadObjective.IsImplementedBy.Find(i => i.Key.Equals(epicKey))); //MUSIC-9585 is implemented by MUSIC-9492
+                            }
+                        }
+                    }
+                }
             }
         }
     }

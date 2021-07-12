@@ -86,7 +86,7 @@ namespace DotJira
         {
             SearchRequest request = new SearchRequest();
             request.JQL = jql;
-            request.Fields = fields ?? new List<string> { "summary", "status", "assignee", "comment" };
+            request.Fields = fields;
             request.StartAt = start;
             request.MaxResults = max;
             string data = JsonConvert.SerializeObject(request);

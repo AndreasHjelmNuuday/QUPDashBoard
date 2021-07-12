@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assignee.cs" />
+    <Compile Include="LinkedIssue.cs" />
     <Compile Include="IssueType.cs" />
+    <Compile Include="LinkType.cs" />
     <Compile Include="RAG.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="QUPHelper.cs" />

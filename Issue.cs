@@ -8,9 +8,6 @@ namespace DotJira
 {
     public class Issue
     {
-        [JsonProperty("expand")]
-        public string Expand { get; set; }
-
         [JsonProperty("id")]
         public int Id { get; set; }
 
@@ -18,9 +15,9 @@ namespace DotJira
         public string Key { get; set; }
 
         [JsonProperty("fields")]
-        public Fields Fields { get; set; }
+        public Fields Fields { get; set; }        
 
-
-        public List<Issue> Children { get; set; }
+        public List<Issue> Children { get; set; } = new List<Issue>();
+        public List<Issue> IsImplementedBy { get; set; } = new List<Issue>();
     }
 }

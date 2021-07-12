@@ -22,7 +22,7 @@ namespace QUPStatus.Controllers
         public IActionResult Index()
         {
             QUPHelper qupHelper = new QUPHelper();
-            List<Issue> issues = qupHelper.getAllQupIssuesSorted("Music", "2021 Q2");            
+            List<Issue> issues = qupHelper.getAllQupIssuesSorted("Music", "2021 Q3");            
             return View(issues); 
         }
 
