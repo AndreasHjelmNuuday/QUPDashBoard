@@ -7,9 +7,9 @@ namespace DotJira
 {
     public class QUPHelper
     {
-        private readonly string jiraUrl = Constants.JIRA_URL;
-        private readonly string jiraUser = Constants.JIRA_USER;
-        private readonly string jiraPassword = Constants.JIRA_PASSWORD;
+        private readonly string jiraUrl = Credentials.JIRA_URL;
+        private readonly string jiraUser = Credentials.JIRA_USER;
+        private readonly string jiraPassword = Credentials.JIRA_PASSWORD;
         Jira jira;
 
         public QUPHelper()

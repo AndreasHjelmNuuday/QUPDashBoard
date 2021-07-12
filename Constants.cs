@@ -22,13 +22,7 @@ namespace DotJira
         public const string ISSUE_TYPE_TRIBE_OBJECTIVE = "Tribe Objective";
         public const string ISSUE_TYPE_SQUAD_OBJECTIVE = "Squad Objective";
         public const string ISSUE_TYPE_Epic = "Epic";
-
-
-        public const string JIRA_URL = "https://jira.tdc.dk";
         
-        public const string JIRA_USER = "";
-        public const string JIRA_PASSWORD = "";
-
         public const string LINK_TYPE_IMPLEMENTATION_ID = "Implementation";
     }
 }

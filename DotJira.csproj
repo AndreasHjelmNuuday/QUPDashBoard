@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assignee.cs" />
+    <Compile Include="Credentials.cs" />
     <Compile Include="LinkedIssue.cs" />
     <Compile Include="IssueType.cs" />
     <Compile Include="LinkType.cs" />
