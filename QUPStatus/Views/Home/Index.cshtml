@@ -67,61 +67,58 @@
         return color;
     }
 }
+
     @foreach (Issue tribeObjective in Model.ToList())
     {
-    <div 
-    style="float:left; 
-    position:relative; 
-    " >
-        <div style="        background: @colorCardBasedOnRAG(tribeObjective);
+    <div style=" display: flex; flex-wrap: nowrap;">
+        <div style="
+        background: @colorCardBasedOnRAG(tribeObjective);
         text-wrap: normal;
         width: 200px;
-        height: 200px;
+        height: 100px;
         border: solid;
         margin: 2px;
-    ">
+        flex-wrap:wrap">
 
-        <div style="
-        background: @issueTypeColor(tribeObjective);
-        ">
-            <img src="@tribeObjective.Fields.Type.IconUrl" style="border: 1px solid black;" />
-            @tribeObjective.Key
-        </div>
-        <div style="background: @colorStatus(tribeObjective)">
-            @tribeObjective.Fields.Status.Name
-        </div>
-        <div><b>@tribeObjective.Fields.Summary</b></div>
-        <div>
-            @if (tribeObjective.Fields.RAG != null)
-            {@tribeObjective.Fields.RAG.Value}
-        </div>
+            <div style="
+            background: @issueTypeColor(tribeObjective); ">
+                    <img src="@tribeObjective.Fields.Type.IconUrl" style="border: 1px solid black;" /> @tribeObjective.Key
+            </div>
+            <div style="background: @colorStatus(tribeObjective)">
+                @tribeObjective.Fields.Status.Name
+            </div>
+            <div><b>@tribeObjective.Fields.Summary</b></div>
+            <div>
+                @if (tribeObjective.Fields.RAG != null)
+                {@tribeObjective.Fields.RAG.Value}
+            </div>
 
-    </div>
-    @foreach (Issue squadObjective in tribeObjective.Children)
-    {
-    <div style="
+        </div>
+        @foreach (Issue squadObjective in tribeObjective.Children)
+        {
+            <div style="
             background: @colorCardBasedOnRAG(squadObjective);
             text-wrap: normal;
             width: 200px;
-            height: 200px;
+            height: 100px;
             border: solid;
-            margin: 2px;            
+            margin: 2px;
         ">
-        <div style="
+                <div style="
         background: @issueTypeColor(squadObjective);
         ">
-            <img src="@squadObjective.Fields.Type.IconUrl" style="border: 1px solid black;" />
-            @squadObjective.Key
-        </div>
-        <div style="background: @colorStatus(squadObjective)">
-            @squadObjective.Fields.Status.Name
-        </div>
-        <div><b>@squadObjective.Fields.Summary </b></div>
-        <div>
-            @if (squadObjective.Fields.RAG != null)
-            {@squadObjective.Fields.RAG.Value}
-        </div>
-    </div>
+                    <img src="@squadObjective.Fields.Type.IconUrl" style="border: 1px solid black;" />
+                    @squadObjective.Key
+                </div>
+                <div style="background: @colorStatus(squadObjective)">
+                    @squadObjective.Fields.Status.Name
+                </div>
+                <div><b>@squadObjective.Fields.Summary </b></div>
+                <div>
+                    @if (squadObjective.Fields.RAG != null)
+                    {@squadObjective.Fields.RAG.Value}
+                </div>
+            </div>
         }
     </div>
     }

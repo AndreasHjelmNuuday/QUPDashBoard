@@ -19,10 +19,10 @@ namespace QUPStatus.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(String project = "MUSIC", String quarter = "2021 Q3" )
         {
             QUPHelper qupHelper = new QUPHelper();
-            List<Issue> issues = qupHelper.getAllQupIssuesSorted("Music", "2021 Q3");            
+            List<Issue> issues = qupHelper.getAllQupIssuesSorted(project, quarter);            
             return View(issues); 
         }
 
