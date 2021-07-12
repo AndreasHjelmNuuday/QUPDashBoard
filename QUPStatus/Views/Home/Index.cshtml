@@ -67,46 +67,47 @@
         return color;
     }
 }
+
     @foreach (Issue tribeObjective in Model.ToList())
     {
-    <div 
-    style="float:left; 
-    position:relative; 
-    " >
+    <div style=" display: flex; flex-wrap: nowrap;">
         <div style="        background: @colorCardBasedOnRAG(tribeObjective);
         text-wrap: normal;
         width: 200px;
         height: 200px;
         border: solid;
         margin: 2px;
+        flex-wrap: wrap">
+
+            <div style="
+            background: @issueTypeColor(tribeObjective); ">
+                    <img src="@tribeObjective.Fields.Type.IconUrl" style="border: 1px solid black;" /> @tribeObjective.Key
+            </div>
+            <div style="background: @colorStatus(tribeObjective)">
+                @tribeObjective.Fields.Status.Name
+            </div>
+            <div><b>@tribeObjective.Fields.Summary</b></div>
+            <div>
+                @if (tribeObjective.Fields.RAG != null)
+                {@tribeObjective.Fields.RAG.Value}
+            </div>
+
+            <div>
+                Children: @{Int32 children = tribeObjective.Children.Count + @tribeObjective.IsImplementedBy.Count;} @children
+                
+                Done: @tribeObjective.DoneChildren
+            </div>
+
+        </div>
+        @foreach (Issue squadObjective in tribeObjective.Children)
+        {
+    <div style="        background: @colorCardBasedOnRAG(squadObjective);
+        text-wrap: normal;
+        width: 200px;
+        height: 200px;
+        border: solid;
+        margin: 2px;
     ">
-
-        <div style="
-        background: @issueTypeColor(tribeObjective);
-        ">
-            <img src="@tribeObjective.Fields.Type.IconUrl" style="border: 1px solid black;" />
-            @tribeObjective.Key
-        </div>
-        <div style="background: @colorStatus(tribeObjective)">
-            @tribeObjective.Fields.Status.Name
-        </div>
-        <div><b>@tribeObjective.Fields.Summary</b></div>
-        <div>
-            @if (tribeObjective.Fields.RAG != null)
-            {@tribeObjective.Fields.RAG.Value}
-        </div>
-
-    </div>
-    @foreach (Issue squadObjective in tribeObjective.Children)
-    {
-    <div style="
-            background: @colorCardBasedOnRAG(squadObjective);
-            text-wrap: normal;
-            width: 200px;
-            height: 200px;
-            border: solid;
-            margin: 2px;            
-        ">
         <div style="
         background: @issueTypeColor(squadObjective);
         ">
@@ -120,6 +121,11 @@
         <div>
             @if (squadObjective.Fields.RAG != null)
             {@squadObjective.Fields.RAG.Value}
+        </div>
+        <div>
+            Children: @{children = squadObjective.Children.Count + squadObjective.IsImplementedBy.Count;} @children
+
+            Done: @squadObjective.DoneChildren
         </div>
     </div>
         }

@@ -34,7 +34,7 @@ namespace DotJira
         }
 
         [Test]
-        public void getAllQUPIssuesInMUSICProject()
+        public void GetAllQUPIssuesInMUSICProject()
         {
             string project = "MUSIC";
             string quarter = "2021 Q2";
@@ -168,6 +168,31 @@ namespace DotJira
                                 Assert.NotNull(squadObjective.IsImplementedBy);
                                 Assert.NotNull(squadObjective.IsImplementedBy.Find(i => i.Key.Equals(epicKey))); //MUSIC-9585 is implemented by MUSIC-9492
                             }
+                        }
+                    }
+                }
+            }
+        }
+        [Test]
+        public void SquadObjectiveHasBothChildAndLinkedEpicsDoneChildrenIsIncreased()
+        {
+            string project = "MUSIC";
+            string quarter = "2021 Q1";            
+
+            List<Issue> issues = qup.getAllQupIssuesSorted(project, quarter);
+
+            Assert.Greater(issues.Count, 0);
+            foreach (Issue tribeObjective in issues)
+            {
+                Assert.AreEqual(tribeObjective.Fields.Type.Name, "Tribe Objective");
+                if (tribeObjective.Children != null)
+                {
+                    foreach (Issue squadObjective in tribeObjective.Children)
+                    {
+
+                        if (squadObjective.Key.Equals("MUSIC-9632"))
+                        {
+                            Assert.AreEqual(2, squadObjective.DoneChildren);
                         }
                     }
                 }

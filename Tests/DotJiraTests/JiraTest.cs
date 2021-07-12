@@ -10,9 +10,9 @@ namespace DotJira
         [SetUp]
         public void Setup()
         {
-            string url = Constants.JIRA_URL;
-            string user = Constants.JIRA_USER;
-            string pw = Constants.JIRA_PASSWORD;
+            string url = Credentials.JIRA_URL;
+            string user = Credentials.JIRA_USER;
+            string pw = Credentials.JIRA_PASSWORD;
             jira = new DotJira.Jira(url, user, pw);
         }
 

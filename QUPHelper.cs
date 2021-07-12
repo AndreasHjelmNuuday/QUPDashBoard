@@ -7,9 +7,9 @@ namespace DotJira
 {
     public class QUPHelper
     {
-        private readonly string jiraUrl = Constants.JIRA_URL;
-        private readonly string jiraUser = Constants.JIRA_USER;
-        private readonly string jiraPassword = Constants.JIRA_PASSWORD;
+        private readonly string jiraUrl = Credentials.JIRA_URL;
+        private readonly string jiraUser = Credentials.JIRA_USER;
+        private readonly string jiraPassword = Credentials.JIRA_PASSWORD;
         Jira jira;
 
         public QUPHelper()
@@ -77,12 +77,12 @@ namespace DotJira
                 }
             }
 
-            sortChildren(tribeObjectives, squadObjectives);
-            sortChildren(squadObjectives, epics);
+            addChildren(tribeObjectives, squadObjectives);
+            addChildren(squadObjectives, epics);
             return tribeObjectives;
         }
 
-        private static void sortChildren(List<Issue> parents, List<Issue> children)
+        private static void addChildren(List<Issue> parents, List<Issue> children)
         {
             foreach (Issue childIssue in children)
             {
@@ -90,7 +90,8 @@ namespace DotJira
                 Issue parentIssue = parents.Find(i => i.Key.Equals(parent));
                 if (parentIssue != null)
                 {                
-                    parentIssue.Children.Add(childIssue);                    
+                    parentIssue.Children.Add(childIssue);
+                    IncreaseDoneChildren(childIssue, parentIssue);
                 }
                 else if (parentIssue == null) //Epic linked by Implements
                 {   
@@ -101,12 +102,24 @@ namespace DotJira
                             if (linked.OutwardIssue != null && linked.LinkType.name.Equals(Constants.LINK_TYPE_IMPLEMENTATION_ID))
                             {
                                 parentIssue = parents.Find(i => i.Key.Equals(linked.OutwardIssue.Key));
-                                parentIssue.IsImplementedBy.Add(childIssue);
+                                if(parentIssue != null)
+                                {
+                                    parentIssue.IsImplementedBy.Add(childIssue);
+                                    IncreaseDoneChildren(childIssue, parentIssue);
+                                }
                             }
                         }                        
                     }                    
                 }
             }
-        }       
+        }
+
+        private static void IncreaseDoneChildren(Issue childIssue, Issue parentIssue)
+        {
+            if (childIssue.Fields.Status.Name.ToLower().Equals("done"))
+            {
+                parentIssue.DoneChildren++;
+            }
+        }
     }
 }
