@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\Desktop\Bin\Net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assignee.cs" />
-    <Compile Include="Credentials.cs" />
     <Compile Include="LinkedIssue.cs" />
     <Compile Include="IssueType.cs" />
     <Compile Include="LinkType.cs" />
@@ -69,6 +68,10 @@
     <Compile Include="Transition.cs" />
     <Compile Include="Transitions.cs" />
     <Compile Include="UrlExtensions.cs" />
+    <Compile Include="Credentials.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

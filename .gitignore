@@ -109,3 +109,4 @@ UpgradeLog*.XML
 /.vs/DotJira/v16/TestStore/0/007.testlog
 /Credentials.cs
 *.testlog
+DotJiraOld/Credentials.cs

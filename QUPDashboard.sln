@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotJira", "DotJira.csproj", "{6986C17B-DA03-4A09-BF98-D6AA32CEC906}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotJiraTests", "Tests\DotJiraTests\DotJiraTests.csproj", "{006118B3-C4AB-4E82-8E6C-6A3871E98381}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QUPStatus", "QUPStatus\QUPStatus.csproj", "{8A2D1DB6-738A-44EE-9FC5-2DD8DDB5ACCD}"
@@ -13,16 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlectoUploader", "PlectoUpl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlectoUploaderTests", "PlectoUploaderTests\PlectoUploaderTests.csproj", "{05D3F537-C080-4CB6-A8AD-071B0E5A30C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotJira", "DotJira\DotJira.csproj", "{A173DA8E-6194-4D5F-909E-85B4D902A3B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6986C17B-DA03-4A09-BF98-D6AA32CEC906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6986C17B-DA03-4A09-BF98-D6AA32CEC906}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6986C17B-DA03-4A09-BF98-D6AA32CEC906}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6986C17B-DA03-4A09-BF98-D6AA32CEC906}.Release|Any CPU.Build.0 = Release|Any CPU
 		{006118B3-C4AB-4E82-8E6C-6A3871E98381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{006118B3-C4AB-4E82-8E6C-6A3871E98381}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{006118B3-C4AB-4E82-8E6C-6A3871E98381}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{05D3F537-C080-4CB6-A8AD-071B0E5A30C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05D3F537-C080-4CB6-A8AD-071B0E5A30C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05D3F537-C080-4CB6-A8AD-071B0E5A30C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A173DA8E-6194-4D5F-909E-85B4D902A3B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A173DA8E-6194-4D5F-909E-85B4D902A3B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A173DA8E-6194-4D5F-909E-85B4D902A3B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A173DA8E-6194-4D5F-909E-85B4D902A3B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
