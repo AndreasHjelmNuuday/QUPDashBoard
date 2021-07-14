@@ -8,7 +8,7 @@
         {
             if (issue.Fields.RAG.Value.Contains("Green"))
             {
-                color = "green";
+                color = "lightgreen";
             }
             else if (issue.Fields.RAG.Value.Contains("Amber"))
             {
@@ -17,7 +17,7 @@
             }
             else if (issue.Fields.RAG.Value.Contains("Red"))
             {
-                color = "darkred";
+                color = "red";
             }
         }
         return color;
@@ -69,65 +69,99 @@
 }
 
     @foreach (Issue tribeObjective in Model.ToList())
-    {
-    <div style=" display: flex; flex-wrap: nowrap;">
-        <div style="        background: @colorCardBasedOnRAG(tribeObjective);
-        text-wrap: normal;
-        width: 200px;
-        height: 200px;
-        border: solid;
-        margin: 2px;
-        flex-wrap: wrap">
-
-            <div style="
-            background: @issueTypeColor(tribeObjective); ">
-                    <img src="@tribeObjective.Fields.Type.IconUrl" style="border: 1px solid black;" /> @tribeObjective.Key
-            </div>
-            <div style="background: @colorStatus(tribeObjective)">
-                @tribeObjective.Fields.Status.Name
-            </div>
-            <div><b>@tribeObjective.Fields.Summary</b></div>
-            <div>
-                @if (tribeObjective.Fields.RAG != null)
-                {@tribeObjective.Fields.RAG.Value}
-            </div>
-
-            <div>
-                Children: @{Int32 children = tribeObjective.Children.Count + @tribeObjective.IsImplementedBy.Count;} @children
-                
-                Done: @tribeObjective.DoneChildren
-            </div>
-
-        </div>
-        @foreach (Issue squadObjective in tribeObjective.Children)
-        {
-    <div style="        background: @colorCardBasedOnRAG(squadObjective);
-        text-wrap: normal;
-        width: 200px;
-        height: 200px;
-        border: solid;
-        margin: 2px;
+    {        
+<div style=" display: flex; flex-wrap: nowrap;">
+    <div style="        border: solid;
+        border-radius: 4px;
+        margin-left: 8px;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        position: relative;
     ">
         <div style="
-        background: @issueTypeColor(squadObjective);
-        ">
-            <img src="@squadObjective.Fields.Type.IconUrl" style="border: 1px solid black;" />
-            @squadObjective.Key
-        </div>
-        <div style="background: @colorStatus(squadObjective)">
-            @squadObjective.Fields.Status.Name
-        </div>
-        <div><b>@squadObjective.Fields.Summary </b></div>
-        <div>
-            @if (squadObjective.Fields.RAG != null)
-            {@squadObjective.Fields.RAG.Value}
-        </div>
-        <div>
-            Children: @{children = squadObjective.Children.Count + squadObjective.IsImplementedBy.Count;} @children
 
-            Done: @squadObjective.DoneChildren
+        width: 200px;
+        height: 200px;
+        border-left: solid;
+        border-left-width: 10px;       
+        border-color:  @colorCardBasedOnRAG(tribeObjective);">        
+
+            <div style="        padding-left: 2px;
+        background: @issueTypeColor(tribeObjective);
+    ">
+                <img src="@tribeObjective.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> @tribeObjective.Key
+                <div style="       
+                float: right;
+                padding-left: 2px;
+                ">
+                    @if (tribeObjective.Fields.RAG != null)
+                    {@tribeObjective.Fields.RAG.RemoveValueText}
+                </div>
+                </div>
+                <div style="        background: @colorStatus(tribeObjective);
+                padding-left: 2px;
+                border-top: 1px solid black;
+                border-bottom: 1px solid black;
+                ">
+                    @tribeObjective.Fields.Status.Name
+
+                </div>
+                <div style="padding-left: 2px;"><b style="font-size:12px; padding-right: 8px; ">@tribeObjective.Fields.Summary</b></div>
+                <div>
+
+                </div>
+
+                <div style="position: absolute; bottom:2px; right: 2px;">
+                    Children: @{Int32 children = tribeObjective.Children.Count + @tribeObjective.IsImplementedBy.Count;} @children\<b>@tribeObjective.DoneChildren</b>
+                </div>
+            </div>
+    </div>
+    @foreach (Issue squadObjective in tribeObjective.Children)
+    {
+<div style="        border: solid;
+        border-radius: 4px;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        position: relative;
+
+    ">
+    
+    <div style="
+            width: 200px;
+            height: 200px;
+            border-left: solid;
+            border-left-width: 10px;
+            border-color: @colorCardBasedOnRAG(squadObjective);
+        ">        
+            <div style="
+            background: @issueTypeColor(squadObjective);
+            padding-left:2px;
+            ">
+                <img src="@squadObjective.Fields.Type.IconUrl"
+                     style="border: 1px solid black;
+                     border-radius: 4px;" /> @squadObjective.Key
+                    <div style="float: right;">
+                        @if (squadObjective.Fields.RAG != null)
+                        {@squadObjective.Fields.RAG.RemoveValueText}
+                    </div>
+                </div>
+
+                <div style="        background:@colorStatus(squadObjective);
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        padding-left: 2px;
+">
+                    @squadObjective.Fields.Status.Name
+                </div>
+                <div style="padding-left:2px;"padding-left:2px;><b style="        font-size: 12px;        padding-right: 8px;">@squadObjective.Fields.Summary </b></div>
+                <div>
+
+                </div>
+                <div style="position: absolute; bottom:2px; right: 2px;">
+                    Children: @{children = squadObjective.Children.Count + squadObjective.IsImplementedBy.Count;} @children\<b>@squadObjective.DoneChildren</b>
+                </div>
+            </div>        
+    </div>
+            }
         </div>
-    </div>
-        }
-    </div>
     }

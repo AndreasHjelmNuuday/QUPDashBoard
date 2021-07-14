@@ -17,5 +17,12 @@ namespace DotJira
 
         [JsonProperty("disabled")]
         public string Disabled { get; set; }
+
+        public string RemoveValueText{
+            get
+            {
+                return Value.Substring(0, 2);
+            }
+        }
     }
 }
