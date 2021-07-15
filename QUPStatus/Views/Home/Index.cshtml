@@ -77,7 +77,7 @@
             position: relative;
             ">
                 <div style="
-                width: 200px;
+                width: 400px;
                 height: 200px;
                 border-left: solid;
                 border-left-width: 10px;
@@ -107,18 +107,19 @@
                 <div style="
                 padding-left: 2px;
                 ">
-                    <b style="font-size:12px; padding-right: 8px; ">@tribeObjective.Fields.Summary</b></div>
+                    <b style="font-size:20px; padding-right: 8px; ">@tribeObjective.Fields.Summary</b></div>
                     <div style="position: absolute; bottom:2px; right: 2px;">
                         Squad Object.: @{Int32 children = tribeObjective.Children.Count + @tribeObjective.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@tribeObjective.DoneChildren</b>
                     </div>
                 </div>
             </div>
-            <div style="        border: solid black;
+            <div style="        
+            border: solid black;
             background-color: beige;
             width: 400px;        
             border-radius: 4px;
             margin-right: 8px;
-            font-size: 16px;
+            font-size: 17px;
             padding-top: 25px;
             padding-right:8px;
             ">
@@ -142,7 +143,7 @@
                 position: relative;
                 ">
                     <div style="
-                    width: 200px;
+                    width: 250px;
                     height: 200px;
                     border-left: solid;
                     border-left-width: 10px;
@@ -171,8 +172,14 @@
                         ">
                         @squadObjective.Fields.Status.Name
                         </div>
-                        <div style="padding-left:2px;" padding-left:2px;><b style="        font-size: 12px;        padding-right: 8px;">@squadObjective.Fields.Summary </b></div>                                
-                        <div style="position: absolute; bottom:2px; right: 2px;">
+                        <div style="padding-left:2px;"><b style="font-size: 16px; padding-right: 8px;">
+                        @squadObjective.Fields.Summary</b>
+                        </div>                                
+                        <div style="
+                        position: absolute;
+                        bottom:2px;
+                        right: 2px;
+                        ">
                         Epics: @{children = squadObjective.Children.Count + squadObjective.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@squadObjective.DoneChildren</b>
                         </div>
                     </div>
