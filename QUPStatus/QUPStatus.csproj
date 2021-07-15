@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DotJira.csproj" />
+    <ProjectReference Include="..\DotJira\DotJira.csproj" />
   </ItemGroup>
 
 </Project>

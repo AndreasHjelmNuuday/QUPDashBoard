@@ -26,10 +26,18 @@ namespace DotJira
         [JsonProperty(Constants.ISSUE_TYPE_ID)]
         public IssueType Type { get; set; }
 
+        [JsonProperty(Constants.KEY_RESULT_CUSTOM_FIELD_ID)]
+        public string KeyResult { get; set; }
+
         [JsonProperty(Constants.PARENT_CUSTOM_FIELD_ID)]
         public string Parent { get; set; }
 
         [JsonProperty("issuelinks")]
         public List<LinkedIssue> linkedIssues { get; set; } = new List<LinkedIssue>();
+
+        public string[] SplitKeyResults()
+        {
+            return KeyResult.Split("*"); //Key Results are listed in one string in Jira, separated by *
+        }
     }
 }

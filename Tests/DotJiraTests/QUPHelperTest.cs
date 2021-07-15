@@ -99,6 +99,31 @@ namespace DotJira
             Issue issue = issues.Find(i => i.Fields != null && i.Fields.linkedIssues.Count != 0);
             Assert.NotNull(issue);
         }
+
+        [Test]
+        public void KeyResultIsSet()
+        {
+            string project = "MUSIC";
+            string quarter = "2021 Q3";
+            List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
+            Issue issue = issues.Find(i => i.Fields != null && i.Fields.KeyResult != null);
+            Assert.NotNull(issue);
+        }
+
+        [Test]
+        public void KeyResultsAreSplitBySeparator()
+        {
+            string project = "MUSIC";
+            string quarter = "2021 Q3";
+            List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
+            Issue issue = issues.Find(i => i.Key.Equals("MUSIC-9552"));                
+            Assert.NotNull(issue);
+            string[] keyResults = issue.Fields.SplitKeyResults();
+            Assert.AreEqual(2, keyResults.Length);
+            
+        }
+
+
         [Test]
         public void TribeObjectivesAreSortedWithSquadObejctivesAsChildren()
         {

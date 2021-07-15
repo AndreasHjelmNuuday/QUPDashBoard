@@ -30,6 +30,7 @@ namespace DotJira
                 Constants.RAG_CUSTOM_FIELD_ID,
                 Constants.PARENT_CUSTOM_FIELD_ID,
                 Constants.ISSUE_TYPE_ID,
+                Constants.KEY_RESULT_CUSTOM_FIELD_ID,
                 "issuelinks",
                 "status"
             }); ;
