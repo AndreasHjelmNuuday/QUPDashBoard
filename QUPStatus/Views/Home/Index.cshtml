@@ -71,18 +71,18 @@
     {
         <div style=" display: flex; flex-wrap: nowrap; margin-top:8px;">
             <div style="        border: solid;
-        border-radius: 4px;
-        margin-left: 8px;
-        margin-right: 8px;       
-        position: relative;
-        ">
-            <div style="
-            width: 200px;
-            height: 200px;
-            border-left: solid;
-            border-left-width: 10px;
-            border-color:  @colorCardBasedOnRAG(tribeObjective);
+            border-radius: 4px;
+            margin-left: 8px;
+            margin-right: 8px;       
+            position: relative;
             ">
+                <div style="
+                width: 200px;
+                height: 200px;
+                border-left: solid;
+                border-left-width: 10px;
+                border-color:  @colorCardBasedOnRAG(tribeObjective);
+                ">
 
                 <div style="
                 padding-left: 2px;
@@ -103,17 +103,16 @@
                 border-bottom: 1px solid black;
                 ">
                     @tribeObjective.Fields.Status.Name
-
                 </div>
-                    <div style="
-                    padding-left: 2px;
-                    ">
-                        <b style="font-size:12px; padding-right: 8px; ">@tribeObjective.Fields.Summary</b></div>
-                        <div style="position: absolute; bottom:2px; right: 2px;">
-                            Squad Object.: @{Int32 children = tribeObjective.Children.Count + @tribeObjective.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@tribeObjective.DoneChildren</b>
-                        </div>
+                <div style="
+                padding-left: 2px;
+                ">
+                    <b style="font-size:12px; padding-right: 8px; ">@tribeObjective.Fields.Summary</b></div>
+                    <div style="position: absolute; bottom:2px; right: 2px;">
+                        Squad Object.: @{Int32 children = tribeObjective.Children.Count + @tribeObjective.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@tribeObjective.DoneChildren</b>
                     </div>
                 </div>
+            </div>
             <div style="        border: solid black;
             background-color: beige;
             width: 400px;        
