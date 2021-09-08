@@ -1,6 +1,6 @@
 ﻿@using DotJira;
 @model IEnumerable<Issue>
-@{ 
+@{
     string colorCardBasedOnRAG(Issue issue)
     {
         string color = "white";
@@ -13,7 +13,7 @@
             else if (issue.Fields.RAG.Value.Contains("Amber"))
             {
 
-                color = "orange";
+                color = "yellow";
             }
             else if (issue.Fields.RAG.Value.Contains("Red"))
             {
@@ -23,16 +23,18 @@
         return color;
     }
 }
-@{ 
+@{
     string colorStatus(Issue issue)
     {
         String status = issue.Fields.Status.Name;
         string color = "white";
-        if (status.Contains("New")) {
+        if (status.Contains("New"))
+        {
             color = "white";
         }
-        else if (status.Contains("Accepted Idea")){
-            color = "grey";
+        else if (status.Contains("Accepted Idea"))
+        {
+            color = "lightgrey";
         }
         else if (status.Contains("Refinement"))
         {
@@ -42,82 +44,115 @@
         {
             color = "lightgreen";
         }
-        else if (status.Contains("Done")){
+        else if (status.Contains("Done"))
+        {
             color = "green";
         }
-     return color;
+        return color;
     }
 }
-@{ 
+@{
     string issueTypeColor(Issue issue)
     {
         String color = "white";
 
-        if(issue.Fields.Type.Name.Equals("Tribe Objective"))
+        if (issue.Fields.Type.Name.Equals("Tribe Objective"))
         {
             color = "#5BFE60";
         }
-        else if(issue.Fields.Type.Name.Equals("Squad Objective"))
+        else if (issue.Fields.Type.Name.Equals("Squad Objective"))
         {
             color = "#FFA0FF";
         }
         return color;
     }
 }
+@{
+    string translateTeamName(Issue issue)
+    {
+        String team = "";
+        switch (issue.Fields.Team) {
+            case "427":
+                team = "MOP";
+                break;
+            case "426":
+                team = "GetOn";
+                break;
+            case "428":
+                team = "PJ";
+                break;
+            case "429":
+                team = "TT";
+                break;
+            case "581":
+                team = "Guardians";
+                break;
+            case "454":
+                team = "RAM";
+                break;
+        }
+        return team;
+    }
+    }
 <div style="zoom: 0.615; position:absolute; top:0;">
     @foreach (Issue tribeObjective in Model.ToList())
     {
         <div style=" display: flex; flex-wrap: nowrap; margin-top:8px;">
-            <div style="        border: solid;
+            <div style="
+            border: solid;
             border-radius: 4px;
             margin-left: 8px;
-            margin-right: 8px;       
+            margin-right: 8px;
             position: relative;
             ">
                 <div style="
                 width: 400px;
                 height: 200px;
+                overflow:hidden;
                 border-left: solid;
                 border-left-width: 10px;
                 border-color:  @colorCardBasedOnRAG(tribeObjective);
                 ">
 
-                <div style="
+                    <div style="
                 padding-left: 2px;
                 background: @issueTypeColor(tribeObjective);
                 ">
-                    <img src="@tribeObjective.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> @tribeObjective.Key
-                    <div style="
+                        <img src="@tribeObjective.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> @tribeObjective.Key
+                        <div style="
                     float: right;
-                    padding-left: 2px;
+                    padding-right: 8px;
                     ">
-                        @if (tribeObjective.Fields.RAG != null)
-                        {@tribeObjective.Fields.RAG.RemoveValueText}
+                            @if (tribeObjective.Fields.RAG != null)
+                            {@tribeObjective.Fields.RAG.RemoveValueText}
+                        </div>
                     </div>
-                </div>
-                <div style="        background: @colorStatus(tribeObjective);
+                    <div style="        background: @colorStatus(tribeObjective);
                 padding-left: 2px;
                 border-top: 1px solid black;
                 border-bottom: 1px solid black;
+                font-size: 20px;
                 ">
-                    @tribeObjective.Fields.Status.Name
-                </div>
-                <div style="
+                        @tribeObjective.Fields.Status.Name
+                    </div>
+                    <div style="
                 padding-left: 2px;
                 ">
-                    <b style="font-size:20px; padding-right: 8px; ">@tribeObjective.Fields.Summary</b></div>
+                        <b style="font-size:20px; padding-right: 8px; ">@tribeObjective.Fields.Summary</b>
+                    </div>
                     <div style="position: absolute; bottom:2px; right: 2px;">
                         Squad Object.: @{Int32 children = tribeObjective.Children.Count + @tribeObjective.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@tribeObjective.DoneChildren</b>
                     </div>
                 </div>
             </div>
-            <div style="        
+            <div style="
             border: solid black;
             background-color: beige;
-            width: 400px;        
+            width: 400px;
             border-radius: 4px;
             margin-right: 8px;
-            font-size: 17px;
+            padding-left:8px;
+            font-size: 16px;
             padding-top: 25px;
             padding-right:8px;
             ">
@@ -131,10 +166,10 @@
                         <li><b>@keyResult</b></li>
                     }
                 </ul>
-            </div>            
+            </div>
             @foreach (Issue squadObjective in tribeObjective.Children)
             {
-                <div style="        
+                <div style="
                 border: solid;
                 border-radius: 4px;
                 margin-right: 8px;
@@ -151,13 +186,11 @@
                         background: @issueTypeColor(squadObjective);
                         padding-left:2px;
                         ">
-                            <img 
-                                    src="@squadObjective.Fields.Type.IconUrl"
-                                    style="border: 1px solid black;
-                                    border-radius: 4px;" 
-                                    /> 
+                            <img src="@squadObjective.Fields.Type.IconUrl"
+                                 style="border: 1px solid black;
+                                    border-radius: 4px;" />
                             @squadObjective.Key
-                            <div style="float: right;">
+                            <div style="float: right; padding-right:8px;">
                                 @if (squadObjective.Fields.RAG != null)
                                 {@squadObjective.Fields.RAG.RemoveValueText}
                             </div>
@@ -167,18 +200,26 @@
                         border-top: 1px solid black;
                         border-bottom: 1px solid black;
                         padding-left: 2px;
+                        font-size: 20px;
                         ">
-                        @squadObjective.Fields.Status.Name
+                            @squadObjective.Fields.Status.Name
                         </div>
-                        <div style="padding-left:2px;"><b style="font-size: 16px; padding-right: 8px;">
-                        @squadObjective.Fields.Summary</b>
-                        </div>                                
+                        <div style="padding-left:2px;">
+                            <b style="font-size: 16px; padding-right: 8px;">
+                                @squadObjective.Fields.Summary
+                            </b>
+                        </div>
+                        <div style="
+                        position: absolute;
+                        bottom:20px;
+                        right: 2px;
+                        ">@translateTeamName(squadObjective)</div>
                         <div style="
                         position: absolute;
                         bottom:2px;
                         right: 2px;
                         ">
-                        Epics: @{children = squadObjective.Children.Count + squadObjective.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@squadObjective.DoneChildren</b>
+                            Epics: @{children = squadObjective.Children.Count + squadObjective.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@squadObjective.DoneChildren</b>
                         </div>
                     </div>
                 </div>
