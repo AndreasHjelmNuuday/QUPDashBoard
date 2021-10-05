@@ -93,7 +93,11 @@ namespace DotJira
             string result = SendRequest(out statuscode, Resource.SEARCH, data: data, method: Method.POST);
             SearchResponse response = JsonConvert.DeserializeObject<SearchResponse>(result);
 
-            return response.Issues;
+            if(response != null)
+            {
+                return response.Issues;
+            }
+            return new List<Issue>();
         }
 
 

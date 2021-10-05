@@ -19,7 +19,7 @@ namespace QUPStatus.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(String project = "MUSIC", String quarter = "2021 Q3" )
+        public IActionResult Index(String project = "MUSIC", String quarter = "2021 Q4" )
         {
             QUPHelper qupHelper = new QUPHelper();
             List<Issue> issues = qupHelper.getAllQupIssuesSorted(project, quarter);            

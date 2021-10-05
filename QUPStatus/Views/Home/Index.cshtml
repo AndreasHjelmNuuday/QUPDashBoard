@@ -8,7 +8,7 @@
         {
             if (issue.Fields.RAG.Value.Contains("Green"))
             {
-                color = "lightgreen";
+                color = "green";
             }
             else if (issue.Fields.RAG.Value.Contains("Amber"))
             {
@@ -90,11 +90,14 @@
             case "454":
                 team = "RAM";
                 break;
+            case "1010":
+                team = "NN";
+                break;
         }
         return team;
     }
     }
-<div style="zoom: 0.615; position:absolute; top:0;">
+<div style="position:absolute; top:0; zoom: 80%">
     @foreach (Issue tribeObjective in Model.ToList())
     {
         <div style=" display: flex; flex-wrap: nowrap; margin-top:8px;">
@@ -116,16 +119,16 @@
 
                     <div style="
                 padding-left: 2px;
-                background: @issueTypeColor(tribeObjective);
+                background: @colorCardBasedOnRAG(tribeObjective);
                 ">
-                        <img src="@tribeObjective.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> @tribeObjective.Key
-                        <div style="
+                        <img src="@tribeObjective.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> <a href="https://jira.tdc.dk/browse/@tribeObjective.Key" style="text-decoration: none; color: black; ">@tribeObjective.Key</a>
+                        <!--div style="
                     float: right;
                     padding-right: 8px;
                     ">
                             @if (tribeObjective.Fields.RAG != null)
                             {@tribeObjective.Fields.RAG.RemoveValueText}
-                        </div>
+                        </!div-->
                     </div>
                     <div style="        background: @colorStatus(tribeObjective);
                 padding-left: 2px;
@@ -153,7 +156,7 @@
             margin-right: 8px;
             padding-left:8px;
             font-size: 16px;
-            padding-top: 25px;
+            padding-top: 4px;
             padding-right:8px;
             ">
                 <b>Key Results:</b>
@@ -173,7 +176,7 @@
                 border: solid;
                 border-radius: 4px;
                 margin-right: 8px;
-                position: relative;
+                position: relative;                
                 ">
                     <div style="
                     width: 250px;
@@ -183,17 +186,17 @@
                     border-color: @colorCardBasedOnRAG(squadObjective);
                     ">
                         <div style="
-                        background: @issueTypeColor(squadObjective);
+                        background: @colorCardBasedOnRAG(squadObjective);
                         padding-left:2px;
                         ">
                             <img src="@squadObjective.Fields.Type.IconUrl"
                                  style="border: 1px solid black;
                                     border-radius: 4px;" />
-                            @squadObjective.Key
-                            <div style="float: right; padding-right:8px;">
-                                @if (squadObjective.Fields.RAG != null)
-                                {@squadObjective.Fields.RAG.RemoveValueText}
-                            </div>
+                            <a href="https://jira.tdc.dk/browse/@squadObjective.Key" style="text-decoration: none; color: black; ">@squadObjective.Key</a>
+                            <!--div style="float: right; padding-right:8px;">
+        @if (squadObjective.Fields.RAG != null)
+        {@squadObjective.Fields.RAG.RemoveValueText}
+    </div>-->
                         </div>
                         <div style="
                         background:@colorStatus(squadObjective);
@@ -204,7 +207,7 @@
                         ">
                             @squadObjective.Fields.Status.Name
                         </div>
-                        <div style="padding-left:2px;">
+                        <div style="padding-left:2px; ">
                             <b style="font-size: 16px; padding-right: 8px;">
                                 @squadObjective.Fields.Summary
                             </b>
