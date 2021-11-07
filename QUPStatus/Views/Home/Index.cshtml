@@ -125,7 +125,7 @@
                 padding-left: 2px;
                 background: @colorCardBasedOnRAG(parent);
                 ">
-                        <img src="@parent.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> <a href="https://jira.tdc.dk/browse/@parent.Key" style="text-decoration: none; color: black; ">@parent.Key</a>
+                        <img src="@parent.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> <a href="https://jira.tdc.dk/browse/@parent.Key" style="color: black; ">@parent.Key</a>
                         <!--div style="
                 float: right;
                 padding-right: 8px;
@@ -208,7 +208,7 @@
                             <img src="@child.Fields.Type.IconUrl"
                                  style="border: 1px solid black;
                                     border-radius: 4px;" />
-                            <a href="https://jira.tdc.dk/browse/@child.Key" style="text-decoration: none; color: black; ">@child.Key</a>
+                            <a href="https://jira.tdc.dk/browse/@child.Key" style="color: black; ">@child.Key</a>
                             <!--div style="float: right; padding-right:8px;">
                             @if (child.Fields.RAG != null)
                             {@child.Fields.RAG.RemoveValueText}
