@@ -101,8 +101,7 @@
         return child;
     }
 }
-<div style="position:absolute; top:0; zoom: 80%">
-
+<div style="position:absolute; top:0; zoom: 80%">    
     @foreach (Issue parent in Model.issues)
     {
         <div style=" display: flex; flex-wrap: nowrap; margin-top:8px;">
@@ -128,12 +127,12 @@
                 ">
                         <img src="@parent.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> <a href="https://jira.tdc.dk/browse/@parent.Key" style="text-decoration: none; color: black; ">@parent.Key</a>
                         <!--div style="
-                        float: right;
-                        padding-right: 8px;
-                        ">
-                                @if (parent.Fields.RAG != null)
-                                {@parent.Fields.RAG.RemoveValueText}
-                            </!div-->
+                float: right;
+                padding-right: 8px;
+                ">
+                        @if (parent.Fields.RAG != null)
+                        {@parent.Fields.RAG.RemoveValueText}
+                    </!div-->
                     </div>
                     <div style="        background: @colorStatus(parent);
                 padding-left: 2px;
@@ -153,10 +152,12 @@
                         </b>
                     </div>
                     <div style="position: absolute; bottom:2px; right: 2px;">
-                        @getChildName(parent) @{Int32 children = parent.Children.Count + parent.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@parent.DoneChildren</b>
+                        @getChildName(parent) @{Int32 children = parent.Children.Count + parent.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">Done: @parent.DoneChildren</b>
                     </div>
                 </div>
-            </div>
+            </div>        
+        @if (parent.Fields.Type.Name.Equals("Tribe Objective") || parent.Fields.Type.Name.Equals("Squad Objective"))
+        {
             <div style="
             border: solid black;
             background-color: beige;
@@ -174,19 +175,24 @@
                 margin-left: 8px;
                 padding-left: 20px;
                 ">
-                    @foreach (string keyResult in parent.Fields.SplitKeyResults())
-                    {
-                        <li><b>@keyResult</b></li>
+                    @{
+
+                        foreach (string keyResult in parent.Fields.SplitKeyResults())
+                        {
+                            <li><b>@keyResult</b></li>
+                        }
                     }
+
                 </ul>
             </div>
+        }        
             @foreach (Issue child in parent.Children)
             {
                 <div style="
                 border: solid;
                 border-radius: 4px;
                 margin-right: 8px;
-                position: relative;
+                position: relative;                               
                 ">
                     <div style="
                     width: 250px;
@@ -204,9 +210,9 @@
                                     border-radius: 4px;" />
                             <a href="https://jira.tdc.dk/browse/@child.Key" style="text-decoration: none; color: black; ">@child.Key</a>
                             <!--div style="float: right; padding-right:8px;">
-                                @if (child.Fields.RAG != null)
-                                {@child.Fields.RAG.RemoveValueText}
-                            </div>-->
+                            @if (child.Fields.RAG != null)
+                            {@child.Fields.RAG.RemoveValueText}
+                        </div>-->
                         </div>
                         <div style="
                         background:@colorStatus(child);
@@ -240,18 +246,18 @@
                             <a href="/Home/Index?team=@child.Fields.Team">
                                 @translateTeamName(child)
                             </a>
-                        
+
                         </div>
                         <div style="
                         position: absolute;
                         bottom:2px;
                         right: 2px;
                         ">
-                            @getChildName(child) @{children = child.Children.Count + child.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@child.DoneChildren</b>
+                            @getChildName(child) @{children = child.Children.Count + child.IsImplementedBy.Count;} @children // <b style="margin-right:4px;"> Done: @child.DoneChildren</b>
                         </div>
                     </div>
                 </div>
             }
-        </div>
+        </div>    
     }
 </div>
