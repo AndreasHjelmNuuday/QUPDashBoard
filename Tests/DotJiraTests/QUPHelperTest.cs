@@ -10,7 +10,7 @@ namespace DotJira
 {
     class QUPHelperTest
     {
-        
+
         QUPHelper qup;
         [SetUp]
         public void Setup()
@@ -48,7 +48,7 @@ namespace DotJira
             string project = "MUSIC";
             string quarter = "2021 Q2";
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
-            Issue issueWithTeamName = issues.Find(i => !i.Fields.Team.Equals(null));
+            Issue issueWithTeamName = issues.Find(i => i.Fields.Team != null);
             Assert.NotNull(issueWithTeamName);
         }
         [Test]
@@ -57,7 +57,7 @@ namespace DotJira
             string project = "MUSIC";
             string quarter = "2021 Q2";
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
-            Issue issueWithRagSet = issues.Find(i => i.Fields.RAG != null && i.Fields.RAG.Value.Contains("Green"));
+            Issue issueWithRagSet = issues.Find(i => i.Fields.RAG != null);
             Assert.NotNull(issueWithRagSet);
         }
 
@@ -78,17 +78,7 @@ namespace DotJira
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
             Issue issueWithIconUrlSet = issues.Find(i => i.Fields != null && i.Fields.Type != null && i.Fields.Type.IconUrl != null);
             Assert.NotNull(issueWithIconUrlSet);
-        }
-
-        [Test]
-        public void ParentIsSet()
-        {
-            string project = "MUSIC";
-            string quarter = "2021 Q2";
-            List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
-            Issue issueWithParentSet = issues.Find(i => i.Fields != null && i.Fields.Parent != null);
-            Assert.NotNull(issueWithParentSet);
-        }
+        }        
 
         [Test]
         public void LinkedIssuesIsSet()
@@ -116,11 +106,11 @@ namespace DotJira
             string project = "MUSIC";
             string quarter = "2021 Q3";
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
-            Issue issue = issues.Find(i => i.Key.Equals("MUSIC-9552"));                
+            Issue issue = issues.Find(i => i.Key.Equals("MUSIC-9552"));
             Assert.NotNull(issue);
             string[] keyResults = issue.Fields.SplitKeyResults();
             Assert.AreEqual(2, keyResults.Length);
-            
+
         }
 
 
@@ -155,11 +145,11 @@ namespace DotJira
                     foreach (Issue squadObjective in tribeObjective.Children)
                     {
                         Assert.AreEqual(squadObjective.Fields.Type.Name, "Squad Objective");
-                        Assert.NotNull(squadObjective.Children);                        
-                            foreach (Issue epic in squadObjective.Children)
-                            {
-                                Assert.AreEqual("Epic", epic.Fields.Type.Name);
-                            }                        
+                        Assert.NotNull(squadObjective.Children);
+                        foreach (Issue epic in squadObjective.Children)
+                        {
+                            Assert.AreEqual("Epic", epic.Fields.Type.Name);
+                        }
                     }
                 }
             }
@@ -172,8 +162,8 @@ namespace DotJira
             string quarter = "2021 Q3";
             const string squadObjectiveKey = "MUSIC-9585";
             const string epicKey = "MUSIC-9492";
-            
-        List<Issue> issues = qup.getAllQupIssuesSorted(project, quarter);
+
+            List<Issue> issues = qup.getAllQupIssuesSorted(project, quarter);
 
             Assert.Greater(issues.Count, 0);
             foreach (Issue tribeObjective in issues)
@@ -184,12 +174,12 @@ namespace DotJira
                     foreach (Issue squadObjective in tribeObjective.Children)
                     {
                         Assert.AreEqual(squadObjective.Fields.Type.Name, "Squad Objective");
-                        Assert.NotNull(squadObjective.IsImplementedBy);                        
+                        Assert.NotNull(squadObjective.IsImplementedBy);
                         foreach (Issue epic in squadObjective.IsImplementedBy)
-                        {                            
+                        {
                             if (epic.Key.Equals(epicKey))
                             {
-                                Assert.AreEqual(squadObjectiveKey, squadObjective.Key); 
+                                Assert.AreEqual(squadObjectiveKey, squadObjective.Key);
                                 Assert.NotNull(squadObjective.IsImplementedBy);
                                 Assert.NotNull(squadObjective.IsImplementedBy.Find(i => i.Key.Equals(epicKey))); //MUSIC-9585 is implemented by MUSIC-9492
                             }
@@ -202,7 +192,7 @@ namespace DotJira
         public void SquadObjectiveHasBothChildAndLinkedEpicsDoneChildrenIsIncreased()
         {
             string project = "MUSIC";
-            string quarter = "2021 Q1";            
+            string quarter = "2021 Q1";
 
             List<Issue> issues = qup.getAllQupIssuesSorted(project, quarter);
 
@@ -223,5 +213,50 @@ namespace DotJira
                 }
             }
         }
+
+        [Test]
+        public void SpecificIssueCanBeFound()
+        {
+             
+            string issueKey = "MUSIC-10617"; //Squad Objective
+            List<Issue> issues = qup.GetSpecificIssue(issueKey);
+
+            Assert.NotNull(issues.First());
+            Assert.AreEqual("Squad Objective", issues.First().Fields.Type.Name);
+            Issue specificIssue = issues.Find(i => i.Key.Equals(issueKey));
+            Assert.NotNull(specificIssue);
+
+        }
+
+        [Test]
+        public void SpecificIssueThatDontBelongToQUPCanBeFound()
+        {
+            
+            string issueKey = "MUSIC-9480"; //epic
+            List<Issue> issues = qup.GetSpecificIssue(issueKey);
+
+            Assert.NotNull(issues.First());
+            Assert.AreEqual("Squad Objective", issues.First().Fields.Type.Name);
+            Issue specificIssue = issues.First().Children.Find(i => i.Key.Equals(issueKey));
+            Assert.NotNull(specificIssue);
+
+        }
+
+        [Test]
+        public void AllTeamIssuesFromAQuarterCanBeFound()
+        {
+            string project = "MUSIC";
+            string quarter = "2021 Q4";
+            string team = "454";
+            List<Issue> issues = qup.GetTeamIssues(project, quarter, team);
+
+            Assert.AreEqual(3, issues.Count);
+
+            Assert.AreEqual("Squad Objective", issues.First().Fields.Type.Name);
+            Assert.AreEqual("Squad Objective", issues.Last().Fields.Type.Name);
+            Issue specificIssue = issues.Find(i => i.Fields.Team.Equals(team));
+            Assert.NotNull(specificIssue);
+        }
+
     }
 }

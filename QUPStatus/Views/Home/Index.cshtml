@@ -1,5 +1,5 @@
 ﻿@using DotJira;
-@model IEnumerable<Issue>
+@model ViewModel;
 @{
     string colorCardBasedOnRAG(Issue issue)
     {
@@ -52,26 +52,11 @@
     }
 }
 @{
-    string issueTypeColor(Issue issue)
-    {
-        String color = "white";
-
-        if (issue.Fields.Type.Name.Equals("Tribe Objective"))
-        {
-            color = "#5BFE60";
-        }
-        else if (issue.Fields.Type.Name.Equals("Squad Objective"))
-        {
-            color = "#FFA0FF";
-        }
-        return color;
-    }
-}
-@{
     string translateTeamName(Issue issue)
     {
         String team = "";
-        switch (issue.Fields.Team) {
+        switch (issue.Fields.Team)
+        {
             case "427":
                 team = "MOP";
                 break;
@@ -96,9 +81,29 @@
         }
         return team;
     }
+}
+@{
+    string getChildName(Issue issue)
+    {
+        String child = "";
+        switch (issue.Fields.Type.Name)
+        {
+            case "Tribe Objective":
+                child = "Squad Objectives: ";
+                break;
+            case "Squad Objective":
+                child = "Epics: ";
+                break;
+            case "Epic":
+                child = "Issues: ";
+                break;
+        }
+        return child;
     }
+}
 <div style="position:absolute; top:0; zoom: 80%">
-    @foreach (Issue tribeObjective in Model.ToList())
+
+    @foreach (Issue parent in Model.issues)
     {
         <div style=" display: flex; flex-wrap: nowrap; margin-top:8px;">
             <div style="
@@ -114,37 +119,41 @@
                 overflow:hidden;
                 border-left: solid;
                 border-left-width: 10px;
-                border-color:  @colorCardBasedOnRAG(tribeObjective);
+                border-color:  @colorCardBasedOnRAG(parent);
                 ">
 
                     <div style="
                 padding-left: 2px;
-                background: @colorCardBasedOnRAG(tribeObjective);
+                background: @colorCardBasedOnRAG(parent);
                 ">
-                        <img src="@tribeObjective.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> <a href="https://jira.tdc.dk/browse/@tribeObjective.Key" style="text-decoration: none; color: black; ">@tribeObjective.Key</a>
+                        <img src="@parent.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> <a href="https://jira.tdc.dk/browse/@parent.Key" style="text-decoration: none; color: black; ">@parent.Key</a>
                         <!--div style="
-                    float: right;
-                    padding-right: 8px;
-                    ">
-                            @if (tribeObjective.Fields.RAG != null)
-                            {@tribeObjective.Fields.RAG.RemoveValueText}
-                        </!div-->
+                        float: right;
+                        padding-right: 8px;
+                        ">
+                                @if (parent.Fields.RAG != null)
+                                {@parent.Fields.RAG.RemoveValueText}
+                            </!div-->
                     </div>
-                    <div style="        background: @colorStatus(tribeObjective);
+                    <div style="        background: @colorStatus(parent);
                 padding-left: 2px;
                 border-top: 1px solid black;
                 border-bottom: 1px solid black;
                 font-size: 20px;
                 ">
-                        @tribeObjective.Fields.Status.Name
+                        @parent.Fields.Status.Name
                     </div>
                     <div style="
                 padding-left: 2px;
                 ">
-                        <b style="font-size:20px; padding-right: 8px; ">@tribeObjective.Fields.Summary</b>
+                        <b style="font-size:20px; padding-right: 8px; ">
+                            <a style="color: black;" href="/Home/Index?issueKey=@parent.Parent">
+                                @parent.Fields.Summary
+                            </a>
+                        </b>
                     </div>
                     <div style="position: absolute; bottom:2px; right: 2px;">
-                        Squad Object.: @{Int32 children = tribeObjective.Children.Count + @tribeObjective.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@tribeObjective.DoneChildren</b>
+                        @getChildName(parent) @{Int32 children = parent.Children.Count + parent.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@parent.DoneChildren</b>
                     </div>
                 </div>
             </div>
@@ -158,71 +167,87 @@
             font-size: 16px;
             padding-top: 4px;
             padding-right:8px;
+
             ">
                 <b>Key Results:</b>
                 <ul style="
                 margin-left: 8px;
                 padding-left: 20px;
                 ">
-                    @foreach (string keyResult in tribeObjective.Fields.SplitKeyResults())
+                    @foreach (string keyResult in parent.Fields.SplitKeyResults())
                     {
                         <li><b>@keyResult</b></li>
                     }
                 </ul>
             </div>
-            @foreach (Issue squadObjective in tribeObjective.Children)
+            @foreach (Issue child in parent.Children)
             {
                 <div style="
                 border: solid;
                 border-radius: 4px;
                 margin-right: 8px;
-                position: relative;                
+                position: relative;
                 ">
                     <div style="
                     width: 250px;
                     height: 200px;
                     border-left: solid;
                     border-left-width: 10px;
-                    border-color: @colorCardBasedOnRAG(squadObjective);
+                    border-color: @colorCardBasedOnRAG(child);
                     ">
                         <div style="
-                        background: @colorCardBasedOnRAG(squadObjective);
+                        background: @colorCardBasedOnRAG(child);
                         padding-left:2px;
                         ">
-                            <img src="@squadObjective.Fields.Type.IconUrl"
+                            <img src="@child.Fields.Type.IconUrl"
                                  style="border: 1px solid black;
                                     border-radius: 4px;" />
-                            <a href="https://jira.tdc.dk/browse/@squadObjective.Key" style="text-decoration: none; color: black; ">@squadObjective.Key</a>
+                            <a href="https://jira.tdc.dk/browse/@child.Key" style="text-decoration: none; color: black; ">@child.Key</a>
                             <!--div style="float: right; padding-right:8px;">
-        @if (squadObjective.Fields.RAG != null)
-        {@squadObjective.Fields.RAG.RemoveValueText}
-    </div>-->
+                                @if (child.Fields.RAG != null)
+                                {@child.Fields.RAG.RemoveValueText}
+                            </div>-->
                         </div>
                         <div style="
-                        background:@colorStatus(squadObjective);
+                        background:@colorStatus(child);
                         border-top: 1px solid black;
                         border-bottom: 1px solid black;
                         padding-left: 2px;
                         font-size: 20px;
                         ">
-                            @squadObjective.Fields.Status.Name
+                            @child.Fields.Status.Name
                         </div>
                         <div style="padding-left:2px; ">
                             <b style="font-size: 16px; padding-right: 8px;">
-                                @squadObjective.Fields.Summary
+                                @if (child.Fields.Type.Name.Equals("Tribe Objective") || child.Fields.Type.Name.Equals("Squad Objective") || child.Fields.Type.Name.Equals("Epic"))
+                                {
+                                    <a style="color: black;" href="/Home/Index?issueKey=@child.Key">
+                                        @child.Fields.Summary
+                                    </a>
+                                }
+                                else
+                                {
+                                    @child.Fields.Summary
+                                }
+
                             </b>
                         </div>
                         <div style="
                         position: absolute;
                         bottom:20px;
                         right: 2px;
-                        ">@translateTeamName(squadObjective)</div>
+                        ">
+                            <a href="/Home/Index?team=@child.Fields.Team">
+                                @translateTeamName(child)
+                            </a>
+                        
+                        </div>
                         <div style="
                         position: absolute;
                         bottom:2px;
                         right: 2px;
                         ">
-                            Epics: @{children = squadObjective.Children.Count + squadObjective.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@squadObjective.DoneChildren</b>
+                            @getChildName(child) @{children = child.Children.Count + child.IsImplementedBy.Count;} @children // <b style="margin-right:4px;">@child.DoneChildren</b>
                         </div>
                     </div>
                 </div>

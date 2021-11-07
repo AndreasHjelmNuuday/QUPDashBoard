@@ -13,19 +13,68 @@ namespace QUPStatus.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        List<Issue> issues = new();
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index(String project = "MUSIC", String quarter = "2021 Q4" )
+        public IActionResult Index(String project = "MUSIC", String quarter = "2021 Q4", String issueKey = null, String team = null)
         {
+            ViewModel model = new();
             QUPHelper qupHelper = new QUPHelper();
-            List<Issue> issues = qupHelper.getAllQupIssuesSorted(project, quarter);            
-            return View(issues); 
+            model.issues = new();
+            if (issueKey == null && team == null)
+            {
+                
+               model.issues = qupHelper.getAllQupIssuesSorted(project, quarter);
+            }
+            else if (issueKey != null)
+            {
+                    issues = qupHelper.GetSpecificIssue(issueKey);
+                    model.issues.Add(findIssue(issueKey));                
+            }
+            else if(team != null)
+            {
+                model.issues = qupHelper.GetTeamIssues(project, quarter, team);
+                
+            }
+            else
+            {
+                model.issues = issues;
+            }
+            return View(model);
         }
 
+        private Issue findIssue(string issueKey)
+        {
+            Issue issue = new();
+            issue = issues.Find(i => i.Key.Equals(issueKey)); //search in tribe objectives
+            if (issue == null)
+            {
+                foreach(Issue tribeObj in issues) { 
+                    Issue squadObject = tribeObj.Children.Find(i => i.Key.Equals(issueKey)); //search in squad objectives
+                    if (squadObject != null)
+                    {
+                        issue = squadObject;
+                        break;
+                    }                        
+                    if (squadObject == null)
+                    {                        
+                        foreach(Issue squadObj in tribeObj.Children)
+                        {
+                            Issue epic = squadObj.Children.Find(i => i.Key.Equals(issueKey)); //search in epics objectives
+                            if (epic != null)
+                            {
+                                issue = epic;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return issue; 
+        }
         public IActionResult Privacy()
         {
             return View();

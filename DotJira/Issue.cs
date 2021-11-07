@@ -20,5 +20,6 @@ namespace DotJira
         public List<Issue> Children { get; set; } = new List<Issue>();
         public List<Issue> IsImplementedBy { get; set; } = new List<Issue>();
         public Int32 DoneChildren { get; set; } = 0;
+        public string Parent { get; set; }
     }
 }
