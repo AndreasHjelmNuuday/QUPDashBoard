@@ -130,10 +130,10 @@ namespace DotJira
                 if (allowOrphans) //hack for squad objectives that are not linked to a tribe objective
                 {
                     parents.Remove(parentIssue);
-                    if(childIssue.Fields.Type.Name.Equals("Squad Objective"))
-                    {
+                    //if(childIssue.Fields.Type.Name.Equals("Squad Objective"))
+                    //{
                         parents.Add(childIssue);
-                    }
+                    //}
                 }
 
                 else if (parentIssue != null)
@@ -184,7 +184,14 @@ namespace DotJira
 
         public List<Issue> GetSpecificIssue(string issueKey)
         {
-            String jql = String.Format("issueFunction in issuesInEpics('Key = {0}') OR issueFunction in issuesInEpics(\"issueFunction in portfolioChildrenOf('Key = {0}')\") OR issueFunction in portfolioChildrenOf('Key = {0}') OR issueFunction in portfolioParentsOf('Key = {0}') OR Key = {0}", issueKey);
+            String jql = String.Format("issueFunction in issuesInEpics('Key = {0}') " +
+                "OR issueFunction in issuesInEpics(\"issueFunction in portfolioChildrenOf('Key = {0}')\") " +
+                "OR issueFunction in portfolioChildrenOf('Key = {0}') " +
+                "OR issueFunction in linkedIssuesOf('Key = {0}', 'is implemented by') " +
+                "OR issueFunction in linkedIssuesOf('Key = {0}', 'implements') " + 
+                "OR issueFunction in issuesInEpics(\"issueFunction in linkedIssuesOf('Key = {0}', 'is implemented by')\")" +
+                "OR issueFunction in portfolioParentsOf('Key = {0}') OR Key = {0}", issueKey);
+
             List<Issue> issues = GetIssues(jql);
             bool allowOrphans = true;
             if (issues != null)

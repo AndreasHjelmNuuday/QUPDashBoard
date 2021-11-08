@@ -229,15 +229,49 @@ namespace DotJira
         }
 
         [Test]
-        public void SpecificIssueThatDontBelongToQUPCanBeFound()
+        public void SpecificIssueAndLinkedEpicsAndSubIssuesCanBeFound()
         {
-            
-            string issueKey = "MUSIC-9480"; //epic
+
+            string issueKey = "MUSIC-10544"; //Squad Objective
             List<Issue> issues = qup.GetSpecificIssue(issueKey);
 
             Assert.NotNull(issues.First());
             Assert.AreEqual("Squad Objective", issues.First().Fields.Type.Name);
-            Issue specificIssue = issues.First().Children.Find(i => i.Key.Equals(issueKey));
+            Issue specificIssue = issues.Find(i => i.Key.Equals(issueKey));            
+            Assert.NotNull(specificIssue);
+            Assert.AreEqual(2, specificIssue.Children.Count);
+            string epicKey = "MUSIC-9116";
+            Issue epic = specificIssue.Children.Find(i => i.Key.Equals(epicKey));
+            Assert.AreEqual(8, epic.Children.Count);
+        }
+
+        [Test]
+        public void SpecificEpicSubIssuesCanBeFound()
+        {
+            string issueKey = "MUSIC-10544"; //Squad Objective
+            List<Issue> issues = qup.GetSpecificIssue(issueKey);
+            Assert.NotNull(issues.First());
+            Assert.AreEqual("Squad Objective", issues.First().Fields.Type.Name);
+            Issue specificIssue = issues.Find(i => i.Key.Equals(issueKey));
+            Assert.NotNull(specificIssue);
+            Assert.AreEqual(2, specificIssue.Children.Count);
+            
+            string epicKey = "MUSIC-9116";            
+            Issue epic = specificIssue.Children.Find(i => i.Key.Equals(epicKey));
+            Assert.NotNull(epic);
+            Assert.AreEqual(8, epic.Children.Count);
+        }
+
+        [Test]
+        public void SpecificIssueThatDontBelongToQUPCanBeFound()
+        {
+            string issueKey = "MUSIC-10634";
+            string epicKey = "MUSIC-9480"; //epic
+            List<Issue> issues = qup.GetSpecificIssue(epicKey);
+            
+            Issue squadObjective = issues.Find(i => i.Key.Equals(issueKey));
+            Assert.NotNull(squadObjective);
+            Issue specificIssue = squadObjective.Children.Find(i => i.Key.Equals(epicKey));
             Assert.NotNull(specificIssue);
 
         }
