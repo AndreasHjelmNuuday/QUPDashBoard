@@ -108,7 +108,7 @@ namespace DotJira
             return SortAllIssues(issues);
         }
 
-        private static List<Issue> SortAllIssues(List<Issue> issues, bool allowOrphans = false)
+        private List<Issue> SortAllIssues(List<Issue> issues, bool allowOrphans = false)
         {
             List<Issue> tribeObjectives = new();
             List<Issue> squadObjectives = new();
@@ -143,7 +143,7 @@ namespace DotJira
             return tribeObjectives;
         }
 
-        private static void AddChildren(List<Issue> parents, List<Issue> children, bool allowOrphans = false)
+        private void AddChildren(List<Issue> parents, List<Issue> children, bool allowOrphans = false)
         {
             foreach (Issue childIssue in children)
             {
@@ -187,14 +187,14 @@ namespace DotJira
             }
         }
 
-        private static void AddChild(Issue childIssue, Issue parentIssue)
+        private void AddChild(Issue childIssue, Issue parentIssue)
         {
             parentIssue.Children.Add(childIssue);
             childIssue.Parent = parentIssue.Key;
             IncreaseDoneChildren(childIssue, parentIssue);
         }
 
-        private static void IncreaseDoneChildren(Issue childIssue, Issue parentIssue)
+        private void IncreaseDoneChildren(Issue childIssue, Issue parentIssue)
         {
             if (childIssue.Fields.Status.Name.ToLower().Equals("done"))
             {

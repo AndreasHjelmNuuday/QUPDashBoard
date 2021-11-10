@@ -69,7 +69,7 @@ namespace DotJira
         /// get a list of projects
         /// </summary>
         /// <returns>A list of projects</returns>
-        public static List<Projects> GetProjects(out string statuscode)
+        public List<Projects> GetProjects(out string statuscode)
         {
             string result = SendRequest(out statuscode, Resource.PROJECT);
             return JsonConvert.DeserializeObject<List<Projects>>(result);
@@ -203,7 +203,7 @@ namespace DotJira
         /// <param name="data"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        private static string SendRequest(out string responseCode, Resource resource, string argument = null, string data = null, Method method = Method.GET)
+        private string SendRequest(out string responseCode, Resource resource, string argument = null, string data = null, Method method = Method.GET)
         {
             string result = string.Empty;
             HttpWebResponse response;

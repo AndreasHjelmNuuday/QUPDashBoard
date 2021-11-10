@@ -17,7 +17,7 @@ namespace DotJira
         public static string Issue(string value)
         {
             return String.Format(_URLExt_Issue, value);
-        }
+        }   
         public static string Comment(string value)
         {
             return String.Format(_URLExt_Comment, value);

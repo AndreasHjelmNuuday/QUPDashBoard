@@ -13,7 +13,7 @@ namespace QUPStatus.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        List<Issue> issues = new();
+        
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -21,7 +21,8 @@ namespace QUPStatus.Controllers
 
         public IActionResult Index(String project = "MUSIC", String quarter = "2021 Q4", String issueKey = null, String team = null)
         {
-            ViewModel model = new();
+            List<Issue> issues = new();
+            QUPViewModel model = new();
             QUPHelper qupHelper = new QUPHelper();
             model.issues = new();
             if (issueKey == null && team == null)
@@ -32,7 +33,7 @@ namespace QUPStatus.Controllers
             else if (issueKey != null)
             {
                     issues = qupHelper.GetSpecificIssue(issueKey);
-                    model.issues.Add(findIssue(issueKey));                
+                    model.issues.Add(findIssue(issueKey, issues));                
             }
             else if(team != null)
             {
@@ -46,7 +47,7 @@ namespace QUPStatus.Controllers
             return View(model);
         }
 
-        private Issue findIssue(string issueKey)
+        private Issue findIssue(string issueKey, List<Issue> issues)
         {
             Issue issue = new();
             issue = issues.Find(i => i.Key.Equals(issueKey)); //search in tribe objectives
