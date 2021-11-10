@@ -292,5 +292,17 @@ namespace DotJira
             Assert.NotNull(specificIssue);
         }
 
+
+        [Test]
+        public void AllTeamOnlyContainsIssuesThatBelongToThatTeam()
+        {
+            string project = "MUSIC";
+            string quarter = "2021 Q4";
+            string team = "428";
+            List<Issue> issues = qup.GetTeamIssues(project, quarter, team);
+
+            Issue specificIssue = issues.Find(i => !i.Fields.Team.Equals(team));
+            Assert.Null(specificIssue);
+        }
     }
 }

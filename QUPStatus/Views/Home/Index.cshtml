@@ -74,10 +74,7 @@
                 break;
             case "454":
                 team = "RAM";
-                break;
-            case "1010":
-                team = "MM";
-                break;
+                break;            
         }
         return team;
     }
@@ -127,12 +124,12 @@
                 ">
                         <img src="@parent.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> <a href="https://jira.tdc.dk/browse/@parent.Key" style="color: black; ">@parent.Key</a>
                         <!--div style="
-                float: right;
-                padding-right: 8px;
-                ">
-                        @if (parent.Fields.RAG != null)
-                        {@parent.Fields.RAG.RemoveValueText}
-                    </!div-->
+        float: right;
+        padding-right: 8px;
+        ">
+                @if (parent.Fields.RAG != null)
+                {@parent.Fields.RAG.RemoveValueText}
+            </!div-->
                     </div>
                     <div style="        background: @colorStatus(parent);
                 padding-left: 2px;
@@ -150,6 +147,16 @@
                                 @parent.Fields.Summary
                             </a>
                         </b>
+                    </div>
+                    <div style="
+                        position: absolute;
+                        bottom:20px;
+                        right: 2px;
+                        ">
+                        <a href="/Home/Index?team=@parent.Fields.Team">
+                            @translateTeamName(parent)
+                        </a>
+
                     </div>
                     <div style="position: absolute; bottom:2px; right: 2px;">
                         @getChildName(parent) @{Int32 noOfChildren = parent.Children.Count + parent.IsImplementedBy.Count;} @noOfChildren // <b style="margin-right:4px;">Done: @parent.DoneChildren</b>

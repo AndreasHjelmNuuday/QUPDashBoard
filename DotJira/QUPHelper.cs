@@ -55,7 +55,11 @@ namespace DotJira
 
         public List<Issue> GetTeamIssues(string project, string quarter, string team)
         {
-            String jql = String.Format("project = {0} AND issueFunction in portfolioChildrenOf(\"Team = {2} AND QUP = '{1}'\") OR Team ={2} AND QUP='{1}' OR  issueFunction in issuesInEpics(\"issueFunction in portfolioChildrenOf(\\\"Team = {2} AND QUP = '{1}'\\\")\") ORDER BY rank ASC", project, quarter, team);
+            String jql = String.Format(
+                "project = {0} " +
+                "AND (issueFunction in portfolioChildrenOf(\"Team = {2} AND QUP = '{1}'\") " +
+                "OR Team = {2} AND QUP='{1}' " +
+                "OR  issueFunction in issuesInEpics(\"issueFunction in portfolioChildrenOf(\\\"Team = {2} AND QUP = '{1}'\\\")\")) ORDER BY rank ASC", project, quarter, team);
             List<Issue> issues = GetIssues(jql);
             bool allowOrphans = true;
             if (issues != null)
