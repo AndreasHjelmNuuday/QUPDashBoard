@@ -232,7 +232,7 @@
                         </div>
                         <div style="padding-left:2px; ">
                             <b style="font-size: 16px; padding-right: 8px;">
-                                @if (child.Fields.Type.Name.Equals("Tribe Objective") || child.Fields.Type.Name.Equals("Squad Objective") || child.Fields.Type.Name.Equals("Epic"))
+                                @if (child.Fields.Type.Name.Equals("Tribe Objective") || child.Fields.Type.Name.Equals("Squad Objective"))
                                 {
                                     <a style="color: black;" href="/Home/Index?issueKey=@child.Key">
                                         @child.Fields.Summary
@@ -250,9 +250,18 @@
                         bottom:20px;
                         right: 2px;
                         ">
-                            <a href="/Home/Index?team=@child.Fields.Team">
-                                @translateTeamName(child)
-                            </a>
+                            @if (child.Fields.Type.Name.Equals("Tribe Objective") || child.Fields.Type.Name.Equals("Squad Objective") )
+                            {
+                                <a href="/Home/Index?team=@child.Fields.Team">
+                                    @translateTeamName(child)
+                                </a>
+                            }
+                            else
+                            {
+                                if(child.Fields.Assignee != null) { 
+                                    @child.Fields.Assignee.DisplayName
+                                }
+                            }
 
                         </div>
                         <div style="

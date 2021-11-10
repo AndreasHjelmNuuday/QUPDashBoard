@@ -24,5 +24,7 @@ namespace DotJira
         public const string ISSUE_TYPE_Epic = "Epic";
         
         public const string LINK_TYPE_IMPLEMENTATION_ID = "Implementation";
+
+        public const string ASSIGNEE_ID = "assignee";
     }
 }

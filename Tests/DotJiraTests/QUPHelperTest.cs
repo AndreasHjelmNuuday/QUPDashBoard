@@ -78,7 +78,21 @@ namespace DotJira
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
             Issue issueWithIconUrlSet = issues.Find(i => i.Fields != null && i.Fields.Type != null && i.Fields.Type.IconUrl != null);
             Assert.NotNull(issueWithIconUrlSet);
-        }        
+        }
+
+        [Test]
+        public void AssigneeDisplayNameIsSet()
+        {
+            string project = "MUSIC";
+            string quarter = "2021 Q4";
+            string tribeObjectiveKey = "MUSIC-10443";
+            string squadObjectiveKey = "MUSIC-10635";
+            List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
+            Issue tribeObjective = issues.Find(i => i.Key.Equals(tribeObjectiveKey));
+            Issue squadObjective = tribeObjective.Children.Find(i => i.Key.Equals(squadObjectiveKey));
+            Issue epic = squadObjective.Children.Find(i => i.Fields.Assignee.DisplayName != null);
+            Assert.NotNull(epic);
+        }
 
         [Test]
         public void LinkedIssuesIsSet()

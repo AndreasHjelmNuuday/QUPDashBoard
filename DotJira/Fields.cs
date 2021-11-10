@@ -14,7 +14,7 @@ namespace DotJira
         [JsonProperty("status")]
         public Status Status { get; set; }
 
-        [JsonProperty("assignee")]
+        [JsonProperty(Constants.ASSIGNEE_ID)]
         public Assignee Assignee { get; set; }
 
         [JsonProperty(Constants.TEAM_CUSTOM_FIELD_ID)]        

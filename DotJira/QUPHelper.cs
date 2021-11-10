@@ -44,6 +44,7 @@ namespace DotJira
                 Constants.ISSUE_TYPE_ID,
                 Constants.KEY_RESULT_CUSTOM_FIELD_ID,
                 Constants.EPIC_LINK_CUSTOM_FIELD_ID,
+                Constants.ASSIGNEE_ID,
                 "issuelinks",
                 "status"
             });
