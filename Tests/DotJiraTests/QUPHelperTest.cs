@@ -318,5 +318,18 @@ namespace DotJira
             Issue specificIssue = issues.Find(i => !i.Fields.Team.Equals(team));
             Assert.Null(specificIssue);
         }
+
+        
+        //[Test]
+        //public void RagCanBeUpdated()
+        //{
+        //    string issueKey = "MUSIC-11324";
+        //    RAG rag = new();
+        //    //rag.Value = "\uD83D\uDFE2 Green";
+        //    rag.Value = "1";
+
+        //    List<Issue> issues = qup.SetRag(issueKey, rag);
+
+        //}
     }
 }

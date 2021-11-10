@@ -16,22 +16,17 @@ namespace DotJira
         {
         }
 
-        public List<Issue> GetAllQUPIssuesInProject(string project, string quarter)
+        private void Connect()
         {
-            string jql = String.Format(
-                "project = {0} AND " +
-                "(issueFunction in portfolioChildrenOf(\"QUP = '{1}'\") OR(QUP = \"{1}\" OR issueFunction in linkedIssuesOf(\"QUP = '{1}'\", \"is implemented by\")))" +
-                "  ORDER BY Rank ASC", project, quarter);
-
-            List<Issue> issues = GetIssues(jql);
-            if (issues != null)
-            {
-                return SortAllIssues(issues);
-            }
-            return null;
+            string statusCode = "";
+            Connect(out statusCode);
         }
 
-
+        public void Connect(out string statusCode)
+        {
+            jira = new Jira(jiraUrl, jiraUser, jiraPassword);
+            jira.checkConnection(out statusCode);
+        }
 
         public List<Issue> GetIssues(string jQLQuery)
         {
@@ -53,6 +48,20 @@ namespace DotJira
             System.Collections.Generic.List<Issue> issues = jira.SearchIssues(out statusCode, jQLQuery, fields);
             return issues;
         }
+        public List<Issue> GetAllQUPIssuesInProject(string project, string quarter)
+        {
+            string jql = String.Format(
+                "project = {0} AND " +
+                "(issueFunction in portfolioChildrenOf(\"QUP = '{1}'\") OR(QUP = \"{1}\" OR issueFunction in linkedIssuesOf(\"QUP = '{1}'\", \"is implemented by\")))" +
+                "  ORDER BY Rank ASC", project, quarter);
+
+            List<Issue> issues = GetIssues(jql);
+            if (issues != null)
+            {
+                return SortAllIssues(issues);
+            }
+            return null;
+        }
 
         public List<Issue> GetTeamIssues(string project, string quarter, string team)
         {
@@ -60,6 +69,8 @@ namespace DotJira
                 "project = {0} " +
                 "AND (issueFunction in portfolioChildrenOf(\"Team = {2} AND QUP = '{1}'\") " +
                 "OR Team = {2} AND QUP='{1}' " +
+                "OR issueFunction in linkedIssuesOf(\"Team = {2} AND QUP = '{1}'\", 'is implemented by') " +
+                "OR issueFunction in linkedIssuesOf(\"Team = {2} AND QUP = '{1}'\", 'implements') " +
                 "OR  issueFunction in issuesInEpics(\"issueFunction in portfolioChildrenOf(\\\"Team = {2} AND QUP = '{1}'\\\")\")) ORDER BY rank ASC", project, quarter, team);
             List<Issue> issues = GetIssues(jql);
             bool allowOrphans = true;
@@ -70,16 +81,23 @@ namespace DotJira
             return null;
         }
 
-        private void Connect()
+        public List<Issue> GetSpecificIssue(string issueKey)
         {
-            string statusCode = "";
-            Connect(out statusCode);
-        }
+            String jql = String.Format("issueFunction in issuesInEpics('Key = {0}') " +
+                "OR issueFunction in issuesInEpics(\"issueFunction in portfolioChildrenOf('Key = {0}')\") " +
+                "OR issueFunction in portfolioChildrenOf('Key = {0}') " +
+                "OR issueFunction in linkedIssuesOf('Key = {0}', 'is implemented by') " +
+                "OR issueFunction in linkedIssuesOf('Key = {0}', 'implements') " +
+                "OR issueFunction in issuesInEpics(\"issueFunction in linkedIssuesOf('Key = {0}', 'is implemented by')\")" +
+                "OR issueFunction in portfolioParentsOf('Key = {0}') OR Key = {0}", issueKey);
 
-        public void Connect(out string statusCode)
-        {
-            jira = new Jira(jiraUrl, jiraUser, jiraPassword);
-            jira.checkConnection(out statusCode);
+            List<Issue> issues = GetIssues(jql);
+            bool allowOrphans = true;
+            if (issues != null)
+            {
+                return SortAllIssues(issues, allowOrphans);
+            }
+            return null;
         }
 
         public List<Issue> getAllQupIssuesSorted(string project, string quarter)
@@ -134,11 +152,8 @@ namespace DotJira
 
                 if (allowOrphans) //hack for squad objectives that are not linked to a tribe objective
                 {
-                    parents.Remove(parentIssue);
-                    //if(childIssue.Fields.Type.Name.Equals("Squad Objective"))
-                    //{
-                        parents.Add(childIssue);
-                    //}
+                    parents.Remove(parentIssue);                    
+                    parents.Add(childIssue);
                 }
 
                 else if (parentIssue != null)
@@ -187,23 +202,14 @@ namespace DotJira
             }
         }
 
-        public List<Issue> GetSpecificIssue(string issueKey)
-        {
-            String jql = String.Format("issueFunction in issuesInEpics('Key = {0}') " +
-                "OR issueFunction in issuesInEpics(\"issueFunction in portfolioChildrenOf('Key = {0}')\") " +
-                "OR issueFunction in portfolioChildrenOf('Key = {0}') " +
-                "OR issueFunction in linkedIssuesOf('Key = {0}', 'is implemented by') " +
-                "OR issueFunction in linkedIssuesOf('Key = {0}', 'implements') " + 
-                "OR issueFunction in issuesInEpics(\"issueFunction in linkedIssuesOf('Key = {0}', 'is implemented by')\")" +
-                "OR issueFunction in portfolioParentsOf('Key = {0}') OR Key = {0}", issueKey);
-
-            List<Issue> issues = GetIssues(jql);
-            bool allowOrphans = true;
-            if (issues != null)
-            {
-                return SortAllIssues(issues, allowOrphans);
-            }
-            return null;
-        }
+        //public List<Issue> SetRag(string issueKey, RAG rag)
+        //{
+        //    string statusCode = "";
+        //    string ragValue = rag.Value;
+        //    Connect();
+        //    string jql = jira.UpdateCustomField(out statusCode, issueKey, Constants.RAG_CUSTOM_FIELD_ID, ragValue);
+        //    List<Issue> issues = GetIssues(jql);
+        //    return SortAllIssues(issues);
+        //}
     }
 }
