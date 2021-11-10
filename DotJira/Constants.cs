@@ -11,7 +11,11 @@ namespace DotJira
         public const string TEAM_CUSTOM_FIELD_ID = "customfield_18200";
         public const string RAG_CUSTOM_FIELD_ID = "customfield_23500";
         public const string PARENT_CUSTOM_FIELD_ID = "customfield_17910";
-        public const string KEY_RESULT_CUSTOM_FIELD_ID = "customfield_23801";
+        public const string KEY_RESULT_1_CUSTOM_FIELD_ID = "customfield_23801";
+        public const string KEY_RESULT_2_CUSTOM_FIELD_ID = "customfield_23802";
+        public const string KEY_RESULT_3_CUSTOM_FIELD_ID = "customfield_23803";
+        public const string KEY_RESULT_4_CUSTOM_FIELD_ID = "customfield_23804";
+
         public const string EPIC_LINK_CUSTOM_FIELD_ID = "customfield_12610";
 
         public const string ISSUE_TYPE_ID = "issuetype";

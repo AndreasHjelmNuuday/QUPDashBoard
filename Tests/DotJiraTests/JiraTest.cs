@@ -23,10 +23,10 @@ namespace DotJira
             checkConnection(out expectedStatus);                        
         }
 
-        private static void checkConnection(out string expectedStatus)
+        private void checkConnection(out string expectedStatus)
         {
             string statusCode = "";
-            List<Projects> projects; projects = Jira.GetProjects(out statusCode);
+            List<Projects> projects; projects = jira.GetProjects(out statusCode);
             expectedStatus = "OK";
             Assert.AreEqual(expectedStatus, statusCode);
             Assert.IsNotNull(projects);

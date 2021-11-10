@@ -26,8 +26,19 @@ namespace DotJira
         [JsonProperty(Constants.ISSUE_TYPE_ID)]
         public IssueType Type { get; set; }
 
-        [JsonProperty(Constants.KEY_RESULT_CUSTOM_FIELD_ID)]
-        public string KeyResult { get; set; }
+        [JsonProperty(Constants.KEY_RESULT_1_CUSTOM_FIELD_ID)]
+        public string KeyResult1 { get; set; }
+
+        [JsonProperty(Constants.KEY_RESULT_2_CUSTOM_FIELD_ID)]
+        public string KeyResult2 { get; set; }
+
+        [JsonProperty(Constants.KEY_RESULT_3_CUSTOM_FIELD_ID)]
+        public string KeyResult3 { get; set; }
+
+        [JsonProperty(Constants.KEY_RESULT_4_CUSTOM_FIELD_ID)]
+        public string KeyResult4 { get; set; }
+
+
 
         [JsonProperty(Constants.PARENT_CUSTOM_FIELD_ID)]
         public string Parent { get; set; }
@@ -39,12 +50,21 @@ namespace DotJira
         public List<LinkedIssue> linkedIssues { get; set; } = new List<LinkedIssue>();
 
         public string[] SplitKeyResults()
-        {            
-            if (KeyResult != null)
+        {
+            String keyResults = ""+ KeyResult1;
+            if (KeyResult2 != null)
             {
-                return KeyResult.Split("*"); //Key Results are listed in one string in Jira, separated by *
+                keyResults += "*" + KeyResult2;
             }
-            return new string[0];
+            if (KeyResult3 != null)
+            {
+                keyResults += "*" + KeyResult3;
+            }
+            if (KeyResult4 != null)
+            {
+                keyResults += "*" + KeyResult4;
+            }            
+            return keyResults.Split("*"); //Key Results are listed in one string in Jira, separated by *
         }
     }
 }

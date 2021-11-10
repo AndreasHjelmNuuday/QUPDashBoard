@@ -110,8 +110,25 @@ namespace DotJira
             string project = "MUSIC";
             string quarter = "2021 Q3";
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
-            Issue issue = issues.Find(i => i.Fields != null && i.Fields.KeyResult != null);
+            Issue issue = issues.Find(i => i.Fields != null && i.Fields.KeyResult1 != null);
             Assert.NotNull(issue);
+        }
+
+        [Test]
+        public void All4KeyResultAreSet()
+        {
+                        
+            string squadObjectiveKey = "MUSIC-10635";
+            List<Issue> issues = qup.GetSpecificIssue(squadObjectiveKey);
+            
+            Issue squadObjective = issues.Find(i => i.Key.Equals(squadObjectiveKey));
+
+            
+
+            Assert.NotNull(squadObjective.Fields.KeyResult1);
+            Assert.NotNull(squadObjective.Fields.KeyResult2);
+            Assert.NotNull(squadObjective.Fields.KeyResult3);
+            Assert.NotNull(squadObjective.Fields.KeyResult4);
         }
 
         [Test]
