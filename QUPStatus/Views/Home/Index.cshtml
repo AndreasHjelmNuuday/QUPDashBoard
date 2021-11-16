@@ -102,20 +102,21 @@
     @foreach (Issue parent in Model.issues)
     {
         <div style=" display: flex; flex-wrap: nowrap; margin-top:8px;">
-            <div style="
-            border: solid;
-            border-radius: 4px;
-            margin-left: 8px;
-            margin-right: 8px;
-            position: relative;
-            ">
+            <div style="        border: solid;
+        border-radius: 4px;
+        margin-left: 8px;
+        margin-right: 8px;
+        position: relative;
+        min-height: 200px;
+    ">
                 <div style="
-                width: 400px;
-                height: 200px;
-                overflow:hidden;
-                border-left: solid;
-                border-left-width: 10px;
-                border-color:  @colorCardBasedOnRAG(parent);
+                    width: 400px;
+                    height: 100%;
+
+                    overflow: hidden;
+                    border-left: solid;
+                    border-left-width: 10px;
+                    border-color: @colorCardBasedOnRAG(parent);
                 ">
 
                     <div style="
@@ -182,11 +183,13 @@
                 margin-left: 8px;
                 padding-left: 20px;
                 ">
-                        @{ 
+                        @{
                             foreach (string keyResult in parent.Fields.SplitKeyResults())
                             {
-                               @if (keyResult.Length > 0)
-                               {<li><b>@keyResult</b></li>}
+                                @if (keyResult.Length > 0)
+                                {
+                                    <li><b>@keyResult</b></li>
+}
                             }
                         }
 
@@ -195,15 +198,16 @@
             }
             @foreach (Issue child in parent.Children)
             {
-                <div style="
-                border: solid;
-                border-radius: 4px;
-                margin-right: 8px;
-                position: relative;
-                ">
+                <div style="        border: solid;
+        border-radius: 4px;
+        margin-right: 8px;
+        min-height: 200px;
+        position: relative;
+    ">
                     <div style="
                     width: 250px;
-                    height: 200px;
+                    height: 100%;
+
                     border-left: solid;
                     border-left-width: 10px;
                     border-color: @colorCardBasedOnRAG(child);
