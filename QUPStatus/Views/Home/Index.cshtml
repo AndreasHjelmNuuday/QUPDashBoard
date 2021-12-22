@@ -1,26 +1,52 @@
 ﻿@using DotJira;
 @model QUPViewModel;
 @{
-    string colorCardBasedOnRAG(Issue issue)
+    string colorCardBasedOnRAG(RAG rag)
     {
         string color = "white";
-        if (issue.Fields.RAG != null)
+        if (rag != null && rag.Value != null)
         {
-            if (issue.Fields.RAG.Value.Contains("Green"))
+            if (rag.Value.ToLower().Contains("green"))
             {
                 color = "green";
             }
-            else if (issue.Fields.RAG.Value.Contains("Amber"))
+            else if (rag.Value.ToLower().Contains("amber"))
             {
 
-                color = "yellow";
+                color = "orange";
             }
-            else if (issue.Fields.RAG.Value.Contains("Red"))
+            else if (rag.Value.ToLower().Contains("red"))
             {
                 color = "red";
             }
+            else
+            {
+                color = "black";
+            }
         }
         return color;
+    }
+}
+@{
+    string insertChangeSymbol(string change)
+    {
+        string changeSymbol = "";
+        if(change != null)
+        {
+            if (change.Equals("+"))
+            {
+                changeSymbol = " ▲ ";
+            }
+            else if (change.Equals("0"))
+            {
+                changeSymbol = " ► ";
+            }
+            else if (change.Equals("-"))
+            {
+                changeSymbol = " ▼ ";
+            }
+        }
+        return changeSymbol;
     }
 }
 @{
@@ -75,6 +101,12 @@
             case "454":
                 team = "RAM";
                 break;
+            case "":
+                team = "Nsync";
+                break;
+            case "455":
+                team = "SexyBack";
+                break;
         }
         return team;
     }
@@ -99,7 +131,7 @@
     }
 }
 <div style="position:absolute; top:0; zoom: 80%">
-    @foreach (Issue parent in Model.issues)
+    @foreach (Issue parent in Model.Issues)
     {
         <div style=" display: flex; flex-wrap: nowrap; margin-top:8px;">
             <div style="        border: solid;
@@ -116,21 +148,14 @@
                     overflow: hidden;
                     border-left: solid;
                     border-left-width: 10px;
-                    border-color: @colorCardBasedOnRAG(parent);
+                    border-color: @colorCardBasedOnRAG(parent.Fields.RAG);
                 ">
 
                     <div style="
                 padding-left: 2px;
-                background: @colorCardBasedOnRAG(parent);
+                background: @colorCardBasedOnRAG(parent.Fields.RAG);
                 ">
-                        <img src="@parent.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> <a href="https://jira.tdc.dk/browse/@parent.Key" style="color: black; ">@parent.Key</a>
-                        <!--div style="
-                        float: right;
-                        padding-right: 8px;
-                        ">
-                                @if (parent.Fields.RAG != null)
-                                {@parent.Fields.RAG.RemoveValueText}
-                            </!div-->
+                        <img src="@parent.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" /> <a href="https://jira.tdc.dk/browse/@parent.Key" style="color: black; ">@parent.Key</a>                        
                     </div>
                     <div style="        background: @colorStatus(parent);
                 padding-left: 2px;
@@ -154,7 +179,7 @@
                         bottom:20px;
                         right: 2px;
                         ">
-                        <a href="/Home/Index?team=@parent.Fields.Team">
+                        <a href="/Home/Index?team=@parent.Fields.Team&quarter=@Model.Quarter">
                             @translateTeamName(parent)
                         </a>
 
@@ -184,12 +209,15 @@
                 padding-left: 20px;
                 ">
                         @{
-                            foreach (string keyResult in parent.Fields.SplitKeyResults())
+                            @foreach (KeyResult keyResult in parent.Fields.SplitKeyResults())
                             {
-                                @if (keyResult.Length > 0)
-                                {
-                                    <li><b>@keyResult</b></li>
-}
+                                <li style="color:@colorCardBasedOnRAG(keyResult.RAG)">
+                                    @keyResult.Text
+                                    @if (keyResult.Value != null && keyResult.Value!= "")
+                                    {
+                                        <b>(@keyResult.Value) @insertChangeSymbol(keyResult.Change)</b>
+                                    }
+                                </li>                                
                             }
                         }
 
@@ -210,20 +238,16 @@
 
                     border-left: solid;
                     border-left-width: 10px;
-                    border-color: @colorCardBasedOnRAG(child);
+                    border-color: @colorCardBasedOnRAG(parent.Fields.RAG);
                     ">
                         <div style="
-                        background: @colorCardBasedOnRAG(child);
+                        background: @colorCardBasedOnRAG(parent.Fields.RAG);
                         padding-left:2px;
                         ">
                             <img src="@child.Fields.Type.IconUrl"
                                  style="border: 1px solid black;
                                     border-radius: 4px;" />
                             <a href="https://jira.tdc.dk/browse/@child.Key" style="color: black; ">@child.Key</a>
-                            <!--div style="float: right; padding-right:8px;">
-                                @if (child.Fields.RAG != null)
-                                {@child.Fields.RAG.RemoveValueText}
-                            </div>-->
                         </div>
                         <div style="
                         background:@colorStatus(child);
@@ -259,7 +283,7 @@
                         ">
                             @if (child.Fields.Type.Name.Equals("Tribe Objective") || child.Fields.Type.Name.Equals("Squad Objective"))
                             {
-                                <a href="/Home/Index?team=@child.Fields.Team">
+                                <a href="/Home/Index?team=@child.Fields.Team&quarter=@Model.Quarter">
                                     @translateTeamName(child)
                                 </a>
                             }

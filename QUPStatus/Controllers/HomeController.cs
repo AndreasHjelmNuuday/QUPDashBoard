@@ -19,31 +19,37 @@ namespace QUPStatus.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(String project = "MUSIC", String quarter = "2021 Q4", String issueKey = null, String team = null)
+        public IActionResult Index(String project = "MUSIC", String quarter = null, String issueKey = null, String team = null)
         {
             List<Issue> issues = new();
             QUPViewModel model = new();
             QUPHelper qupHelper = new QUPHelper();
-            model.issues = new();
+
+            model.Issues = new();
+
+            if (quarter == null)
+            {
+                quarter = QuarterCalculator.currentQuarter();
+            }            
             if (issueKey == null && team == null)
             {
                 
-               model.issues = qupHelper.getAllQupIssuesSorted(project, quarter);
+               model.Issues = qupHelper.getAllQupIssuesSorted(project, quarter);
             }
             else if (issueKey != null)
             {
                     issues = qupHelper.GetSpecificIssue(issueKey);
-                    model.issues.Add(findIssue(issueKey, issues));                
+                    model.Issues.Add(findIssue(issueKey, issues));                
             }
             else if(team != null)
             {
-                model.issues = qupHelper.GetTeamIssues(project, quarter, team);
-                
+                model.Issues = qupHelper.GetTeamIssues(project, quarter, team);                
             }
             else
             {
-                model.issues = issues;
+                model.Issues = issues;
             }
+            model.Quarter = quarter;
             return View(model);
         }
 

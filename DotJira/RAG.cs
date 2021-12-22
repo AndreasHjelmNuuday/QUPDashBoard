@@ -8,7 +8,30 @@ using System.Threading.Tasks;
 namespace DotJira
 {
     public class RAG
-    {
+    {        
+        public RAG(string v)
+        {
+            this.Value = "black";
+
+            if (v.ToLower().Equals("g"))
+            {
+                this.Value = "green";
+            }
+            else if (v.ToLower().Equals("a"))
+            {
+                this.Value = "amber";
+            }
+            else if (v.ToLower().Equals("r"))
+            {
+                this.Value = "red";
+            }            
+        }
+
+        public RAG()
+        {
+            Value = "black";
+        }
+
         [JsonProperty("value")]
         public string Value { get; set; }
 
@@ -17,12 +40,5 @@ namespace DotJira
 
         [JsonProperty("disabled")]
         public string Disabled { get; set; }
-
-        public string RemoveValueText{
-            get
-            {
-                return Value.Substring(0, 2);
-            }
-        }
     }
 }

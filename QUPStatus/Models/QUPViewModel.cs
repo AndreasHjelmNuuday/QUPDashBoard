@@ -8,8 +8,10 @@ namespace QUPStatus.Models
 {
     public class QUPViewModel
     {
-        public List<Issue> issues { get; set; }
-        public String parentKey { get; set; }
+        public List<Issue> Issues { get; set; }
+        public String ParentKey { get; set; }
+
+        public string Quarter { get; set; }
 
     }
 }

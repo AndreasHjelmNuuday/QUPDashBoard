@@ -11,7 +11,7 @@ namespace DotJira
     class QUPHelperTest
     {
 
-        QUPHelper qup;
+        QUPHelper qup;        
         [SetUp]
         public void Setup()
         {
@@ -129,6 +129,9 @@ namespace DotJira
             Assert.NotNull(squadObjective.Fields.KeyResult2);
             Assert.NotNull(squadObjective.Fields.KeyResult3);
             Assert.NotNull(squadObjective.Fields.KeyResult4);
+
+            Assert.AreEqual(squadObjective.Fields.KeyResult1, squadObjective.Fields.SplitKeyResults().First().Text);
+            Assert.AreEqual(squadObjective.Fields.KeyResult4, squadObjective.Fields.SplitKeyResults().Last().Text);
         }
 
         [Test]
@@ -139,9 +142,8 @@ namespace DotJira
             List<Issue> issues = qup.GetAllQUPIssuesInProject(project, quarter);
             Issue issue = issues.Find(i => i.Key.Equals("MUSIC-9552"));
             Assert.NotNull(issue);
-            string[] keyResults = issue.Fields.SplitKeyResults();
-            Assert.AreEqual(2, keyResults.Length);
-
+            List<KeyResult> keyResults = issue.Fields.SplitKeyResults();
+            Assert.AreEqual(2, keyResults.Count);
         }
 
 
@@ -335,18 +337,5 @@ namespace DotJira
             Issue specificIssue = issues.Find(i => !i.Fields.Team.Equals(team));
             Assert.Null(specificIssue);
         }
-
-        
-        //[Test]
-        //public void RagCanBeUpdated()
-        //{
-        //    string issueKey = "MUSIC-11324";
-        //    RAG rag = new();
-        //    //rag.Value = "\uD83D\uDFE2 Green";
-        //    rag.Value = "1";
-
-        //    List<Issue> issues = qup.SetRag(issueKey, rag);
-
-        //}
     }
 }

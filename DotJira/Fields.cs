@@ -48,23 +48,10 @@ namespace DotJira
 
         [JsonProperty("issuelinks")]
         public List<LinkedIssue> linkedIssues { get; set; } = new List<LinkedIssue>();
-
-        public string[] SplitKeyResults()
-        {
-            String keyResults = ""+ KeyResult1;
-            if (KeyResult2 != null)
-            {
-                keyResults += "*" + KeyResult2;
-            }
-            if (KeyResult3 != null)
-            {
-                keyResults += "*" + KeyResult3;
-            }
-            if (KeyResult4 != null)
-            {
-                keyResults += "*" + KeyResult4;
-            }            
-            return keyResults.Split("*"); //Key Results are listed in one string in Jira, separated by *
+        
+        public List<KeyResult> SplitKeyResults()
+        {            
+            return KeyResultHelper.SplitKeyResults(this);
         }
     }
 }
