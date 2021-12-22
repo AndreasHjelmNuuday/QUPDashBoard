@@ -8,16 +8,16 @@
         {
             if (rag.Value.ToLower().Contains("green"))
             {
-                color = "green";
+                color = "mediumseagreen";
             }
             else if (rag.Value.ToLower().Contains("amber"))
             {
 
-                color = "orange";
+                color = "darkorange";
             }
             else if (rag.Value.ToLower().Contains("red"))
             {
-                color = "red";
+                color = "indianred";
             }
             else
             {
@@ -139,7 +139,7 @@
         margin-left: 8px;
         margin-right: 8px;
         position: relative;
-        min-height: 200px;
+        min-height: 200px;        
     ">
                 <div style="
                     width: 400px;
@@ -238,10 +238,10 @@
 
                     border-left: solid;
                     border-left-width: 10px;
-                    border-color: @colorCardBasedOnRAG(parent.Fields.RAG);
+                    border-color: @colorCardBasedOnRAG(child.Fields.RAG);
                     ">
                         <div style="
-                        background: @colorCardBasedOnRAG(parent.Fields.RAG);
+                        background: @colorCardBasedOnRAG(child.Fields.RAG);
                         padding-left:2px;
                         ">
                             <img src="@child.Fields.Type.IconUrl"
