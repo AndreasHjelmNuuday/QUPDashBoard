@@ -1,5 +1,4 @@
-﻿using NSubstitute;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,7 @@ namespace DotJira
     {
 
         [Test]
-        public void calucalateCurrentQuarter()
+        public void calculateCurrentQuarter()
         {                        
             //string currentQuarter = "2021 Q4";
             //string q = QuarterCalculator.currentQuarter();
