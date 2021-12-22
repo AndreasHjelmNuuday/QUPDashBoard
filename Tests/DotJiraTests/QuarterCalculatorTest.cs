@@ -12,11 +12,11 @@ namespace DotJira
 
         [Test]
         public void calculateCurrentQuarter()
-        {                        
+        {
             //string currentQuarter = "2021 Q4";
-            //string q = QuarterCalculator.currentQuarter();
+            //string q = QuarterCalculator.currentQuarter;
 
-            //Assert.AreEqual(currentQuarter, q);            
+            //Assert.AreEqual(currentQuarter, q);
         }
     }
 }

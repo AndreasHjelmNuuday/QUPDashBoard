@@ -29,7 +29,7 @@ namespace QUPStatus.Controllers
 
             if (quarter == null)
             {
-                quarter = QuarterCalculator.currentQuarter();
+                quarter = QuarterCalculator.currentQuarter;
             }            
             if (issueKey == null && team == null)
             {
