@@ -9,7 +9,7 @@ namespace DotJira
     public class QuarterCalculator
     {
         
-        public static string currentQuarter
+        public static string CurrentQuarter
         {
             get
             {
