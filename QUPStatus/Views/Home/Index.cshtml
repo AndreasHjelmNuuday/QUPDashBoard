@@ -39,11 +39,11 @@
             }
             else if (change.Equals("0"))
             {
-                changeSymbol = " ► ";
+                changeSymbol = " = ";
             }
             else if (change.Equals("-"))
             {
-                changeSymbol = " ▼ ";
+                changeSymbol = "    ▼ ";
             }
         }
         return changeSymbol;
@@ -215,7 +215,7 @@
                                     @keyResult.Text
                                     @if (keyResult.Value != null && keyResult.Value!= "")
                                     {
-                                        <b>(@keyResult.Value) @insertChangeSymbol(keyResult.Change)</b>
+                                        <b> (@keyResult.Value) @insertChangeSymbol(keyResult.Change)</b>
                                     }
                                 </li>                                
                             }

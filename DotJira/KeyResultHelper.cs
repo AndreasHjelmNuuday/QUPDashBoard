@@ -40,7 +40,7 @@ namespace DotJira
             foreach (string keyResultAsText in keyResultSplit)
             {
                 KeyResult kR = new ();
-                string[] stringArray = keyResultAsText.Split("[");
+                string[] stringArray = keyResultAsText.Trim().Split("[");
                 string KeysResultText = stringArray.First().Trim();
                 kR.Text = KeysResultText;
                 if (stringArray.Length > 1)
