@@ -14,6 +14,9 @@ namespace DotJira
         [JsonProperty("status")]
         public Status Status { get; set; }
 
+        [JsonProperty(Constants.DESCRIPTION_FIELD_ID)]
+        public String Description { get; set; }
+
         [JsonProperty(Constants.ASSIGNEE_ID)]
         public Assignee Assignee { get; set; }
 

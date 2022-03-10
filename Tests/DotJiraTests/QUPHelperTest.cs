@@ -51,6 +51,14 @@ namespace DotJira
             Issue issueWithTeamName = issues.Find(i => i.Fields.Team != null);
             Assert.NotNull(issueWithTeamName);
         }
+
+        [Test]
+        public void DescriptionFieldIsSet()
+        {
+            List<Issue> issues = qup.GetSpecificIssue("MUSIC-12932");
+            Issue issueDescription = issues.Find(i => i.Fields.Description != null);
+            Assert.NotNull(issueDescription);
+        }
         [Test]
         public void RAGFieldIsSet()
         {

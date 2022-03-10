@@ -33,6 +33,7 @@ namespace DotJira
             Connect();
             System.Collections.Generic.List<string> fields = new(new string[] {
                 "summary",
+                Constants.DESCRIPTION_FIELD_ID,
                 Constants.TEAM_CUSTOM_FIELD_ID,
                 Constants.RAG_CUSTOM_FIELD_ID,
                 Constants.PARENT_CUSTOM_FIELD_ID,
@@ -74,7 +75,9 @@ namespace DotJira
                 "OR Team = {2} AND QUP='{1}' " +
                 "OR issueFunction in linkedIssuesOf(\"Team = {2} AND QUP = '{1}'\", 'is implemented by') " +
                 "OR issueFunction in linkedIssuesOf(\"Team = {2} AND QUP = '{1}'\", 'implements') " +
-                "OR  issueFunction in issuesInEpics(\"issueFunction in portfolioChildrenOf(\\\"Team = {2} AND QUP = '{1}'\\\")\")) ORDER BY rank ASC", project, quarter, team);
+                "OR issueFunction in issuesInEpics(\"issueFunction in portfolioChildrenOf(\\\"Team = {2} AND QUP = '{1}'\\\")\")) " +
+                "OR issueFunction in issuesInEpics(\"issueFunction in linkedIssuesOf(\\\"Team = {2} AND QUP = '{1}'\\\", 'is implemented by')\")" +
+                " ORDER BY rank ASC", project, quarter, team);
             List<Issue> issues = GetIssues(jql);
             bool allowOrphans = true;
             if (issues != null)
