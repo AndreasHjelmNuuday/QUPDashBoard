@@ -17,4 +17,10 @@
     <ProjectReference Include="..\DotJira\DotJira.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Views\KPI\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\KPI\" />
+  </ItemGroup>
 </Project>
