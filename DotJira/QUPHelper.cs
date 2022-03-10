@@ -52,6 +52,38 @@ namespace DotJira
             System.Collections.Generic.List<Issue> issues = jira.SearchIssues(out statusCode, jQLQuery, fields);
             return issues;
         }
+
+        public static Issue findIssue(string issueKey, List<Issue> issues)
+        {
+                Issue issue = new();
+                issue = issues.Find(i => i.Key.Equals(issueKey)); //search in tribe objectives
+                if (issue == null)
+                {
+                    foreach (Issue tribeObj in issues)
+                    {
+                        Issue squadObject = tribeObj.Children.Find(i => i.Key.Equals(issueKey)); //search in squad objectives
+                        if (squadObject != null)
+                        {
+                            issue = squadObject;
+                            break;
+                        }
+                        if (squadObject == null)
+                        {
+                            foreach (Issue squadObj in tribeObj.Children)
+                            {
+                                Issue epic = squadObj.Children.Find(i => i.Key.Equals(issueKey)); //search in epics objectives
+                                if (epic != null)
+                                {
+                                    issue = epic;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                return issue;
+        }
+
         public List<Issue> GetAllQUPIssuesInProject(string project, string quarter)
         {
             string jql = String.Format(
@@ -87,18 +119,19 @@ namespace DotJira
             return null;
         }
 
-        public List<Issue> GetSpecificIssue(string issueKey)
+        public List<Issue> GetSpecificIssue(string issueKey, bool allowOrphans = true)
         {
-            String jql = String.Format("issueFunction in issuesInEpics('Key = {0}') " +
+            String jql = String.Format(                
+                "issueFunction in issuesInEpics('Key = {0}') " +
                 "OR issueFunction in issuesInEpics(\"issueFunction in portfolioChildrenOf('Key = {0}')\") " +
                 "OR issueFunction in portfolioChildrenOf('Key = {0}') " +
                 "OR issueFunction in linkedIssuesOf('Key = {0}', 'is implemented by') " +
                 "OR issueFunction in linkedIssuesOf('Key = {0}', 'implements') " +
                 "OR issueFunction in issuesInEpics(\"issueFunction in linkedIssuesOf('Key = {0}', 'is implemented by')\")" +
-                "OR issueFunction in portfolioParentsOf('Key = {0}') OR Key = {0}", issueKey);
+                "OR issueFunction in portfolioParentsOf('Key = {0}') " +
+                "OR Key = {0}", issueKey);
 
-            List<Issue> issues = GetIssues(jql);
-            bool allowOrphans = true;
+            List<Issue> issues = GetIssues(jql);            
             if (issues != null)
             {
                 return SortAllIssues(issues, allowOrphans);

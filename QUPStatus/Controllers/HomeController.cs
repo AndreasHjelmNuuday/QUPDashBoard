@@ -39,7 +39,7 @@ namespace QUPStatus.Controllers
             else if (issueKey != null)
             {
                     issues = qupHelper.GetSpecificIssue(issueKey);
-                    model.Issues.Add(findIssue(issueKey, issues));                
+                    model.Issues.Add(QUPHelper.findIssue(issueKey, issues));                
             }
             else if(team != null)
             {
@@ -51,36 +51,6 @@ namespace QUPStatus.Controllers
             }
             model.Quarter = quarter;
             return View(model);
-        }
-
-        private Issue findIssue(string issueKey, List<Issue> issues)
-        {
-            Issue issue = new();
-            issue = issues.Find(i => i.Key.Equals(issueKey)); //search in tribe objectives
-            if (issue == null)
-            {
-                foreach(Issue tribeObj in issues) { 
-                    Issue squadObject = tribeObj.Children.Find(i => i.Key.Equals(issueKey)); //search in squad objectives
-                    if (squadObject != null)
-                    {
-                        issue = squadObject;
-                        break;
-                    }                        
-                    if (squadObject == null)
-                    {                        
-                        foreach(Issue squadObj in tribeObj.Children)
-                        {
-                            Issue epic = squadObj.Children.Find(i => i.Key.Equals(issueKey)); //search in epics objectives
-                            if (epic != null)
-                            {
-                                issue = epic;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            return issue; 
         }
         public IActionResult Privacy()
         {

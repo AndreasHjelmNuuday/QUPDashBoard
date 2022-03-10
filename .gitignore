@@ -111,3 +111,4 @@ UpgradeLog*.XML
 *.testlog
 DotJiraOld/Credentials.cs
 *.json
+/DotJira/Credentials.cs
