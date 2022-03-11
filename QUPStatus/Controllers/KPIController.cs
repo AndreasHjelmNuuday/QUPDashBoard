@@ -23,8 +23,9 @@ namespace QUPStatus.Controllers
         {
             QUPViewModel model = new();             
             QUPHelper qupHelper = new();
+            KPIHelper kPIHelper = new();
             List<Issue> issues = qupHelper.GetSpecificIssue(issueKey, false);
-            KPIHelper.parseKPIs(issues);
+            kPIHelper.ParseKPIs(issues);            
             model.Issues.Add(QUPHelper.findIssue(issueKey, issues));           
             return View(model);
         }
