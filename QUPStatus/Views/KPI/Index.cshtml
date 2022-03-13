@@ -1,61 +1,72 @@
 ﻿@using DotJira;
+@using Newtonsoft.Json; 
 @model QUPViewModel;
 
-<div style="max-width: 400px; max-height: 400px">
+<script>
 
-    @foreach (Issue parent in Model.Issues)
-    {
-    <div><H1>@parent.Fields.Summary</H1></div>
-        foreach (Issue child in parent.Children)
-        {
-            <a>@child.Fields.Summary</a>
-            
-            <div style="position:relative; float:right">
+    function createGraph(key, labels, realized, budgets){
+         ctx = document.getElementById(key).getContext('2d');
+                    myChart = new Chart(ctx, {
+                            type: 'bar',
+                        data: {
+                            labels: labels,
 
-                <canvas id="@child.Key" width="400" height="400"></canvas>
-            </div>
-           <script>
-            const ctx = document.getElementById('@child.Key').getContext('2d');
-            const myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                            datasets: [{
+                        label: ['Realized'],
+                                    data:  realized,
+                                    backgroundColor: [
+                                        'rgba(99, 255, 132, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(99, 255, 132, 1)',
+                                    ],
+                                    borderWidth: 1
+                                },
 
-                        datasets: [{
-                label: ['Realized'],
-                            data: @child.KPIs.RealizedJSON ,
-                            backgroundColor: [
-                                'rgba(99, 255, 132, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgba(99, 255, 132, 1)',
-                            ],
-                            borderWidth: 1
-                        },
+                                {
+                        label: ['budget'],
+                                    data:  budgets,
+                                    backgroundColor: [
+                                        'rgba(173,216,230, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(173,216,230, 1)',
+                                    ],
 
-                        {
-                label: ['budget'],
-                            data: @child.KPIs.BudgetsJSON ,
-                            backgroundColor: [
-                                'rgba(173,216,230, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgba(173,216,230, 1)',
-                            ],
-
-                            borderWidth: 1
-                        },]
-                    },
-                options: {
+                                    borderWidth: 1
+                                },]
+                            },
+                            options: {
                     scales: {
                         y: {
                             beginAtZero: false
-                            }
+                           }
                         }
                     }
-                });
-           </script>
-            
-        }        
+                    });
+
+    }
+
+</script>
+
+<div style="margin-left:20px;">
+    @foreach (Issue parent in Model.Issues)
+    {
+
+    <div style="position: relative; max-width:fit-content(); float:left; margin-right: 20px;" >
+        <div><H1>@parent.Fields.Summary</H1></div>
+        @foreach (Issue child in parent.Children)
+        {           
+    <div style="position: relative; height:fit-content(); max-width: 400px">
+        <div style="height: 40px;"><a>@child.Fields.Summary</a></div>
+        <div style="max-width: 400px; max-height: 400px; ">
+            <canvas id="@child.Key"></canvas>
+        </div>
+        <script>
+                createGraph("@child.Key", @Html.Raw(child.KPIs.LabelsJSON), @Html.Raw(child.KPIs.RealizedJSON),@Html.Raw(child.KPIs.BudgetsJSON));
+        </script>
+    </div>
+                }
+            </div>   
     }
 </div>

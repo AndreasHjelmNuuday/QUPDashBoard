@@ -19,14 +19,18 @@ namespace QUPStatus.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(string issueKey)
+        public IActionResult Index(string[] issueKeys)
         {
-            QUPViewModel model = new();             
+            QUPViewModel model = new();
             QUPHelper qupHelper = new();
             KPIHelper kPIHelper = new();
-            List<Issue> issues = qupHelper.GetSpecificIssue(issueKey, false);
-            kPIHelper.ParseKPIs(issues);            
-            model.Issues.Add(QUPHelper.findIssue(issueKey, issues));           
+
+            foreach (string issueKey in issueKeys) { 
+                List<Issue> issues = qupHelper.GetSpecificIssue(issueKey, false);
+                kPIHelper.ParseKPIs(issues);
+                model.Issues.Add(QUPHelper.findIssue(issueKey, issues));
+
+            }
             return View(model);
         }
 

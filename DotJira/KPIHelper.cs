@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,10 +36,12 @@ namespace DotJira
         private void ParseKPIString(Issue issue)
         {
 
+            if (issue.Fields.Description != null && issue.Fields.Description.Contains("]")){ 
             String[] description = issue.Fields.Description.Split("]");
             foreach (string line in description)
             {
-                if (line != null && line.Length > 0) { 
+                if (line != null && line.Length > 0)
+                {
                     string lineWithOutStartBracket = line.Substring(1);
                     string period = lineWithOutStartBracket.Split(";")[0];
                     string budget = lineWithOutStartBracket.Split(";")[1];
@@ -46,22 +49,22 @@ namespace DotJira
                     if (budget.Contains(BUDGET))
                     {
                         budget = budget.Trim().Substring(BUDGET.Length).Trim();
-                    }         
+                    }
                     string realized = lineWithOutStartBracket.Split(";")[2];
                     if (realized.Contains(REALIZED))
                     {
-                            realized = realized.Trim().Substring(REALIZED.Length).Trim();
+                        realized = realized.Trim().Substring(REALIZED.Length).Trim();
                     }
 
-                    issue.KPIs.Periods.Add(period);                    
+                    issue.KPIs.Periods.Add(period);
                     issue.KPIs.Budgets.Add(budget);
                     issue.KPIs.Realized.Add(realized);
 
                     CreatesJSON(issue);
-
-                }   
-            }
+                }
+            }   
         }
+    }
 
         private void CreatesJSON(Issue issue)
         {
@@ -71,38 +74,18 @@ namespace DotJira
         }
 
         public void CreateLabels(Issue issue)
-        {
-            string labels = "[";
-            foreach(string label in issue.KPIs.Periods)
-            {
-                labels += label + ", ";
-            }
-            labels += "]";
-            issue.KPIs.LabelsJSON = labels;
-
-            issue.KPIs.LabelsJSON = "['jan', 'feb']";
+        {            
+            issue.KPIs.LabelsJSON = JsonConvert.SerializeObject(issue.KPIs.Periods);            
         }
 
         public void CreateBudgets(Issue issue)
         {
-            string budgets = "[";
-            foreach (string label in issue.KPIs.Budgets)
-            {
-                budgets += label + ", ";
-            }
-            budgets += "]";
-            issue.KPIs.BudgetsJSON = budgets;
+            issue.KPIs.BudgetsJSON = JsonConvert.SerializeObject(issue.KPIs.Budgets);
         }
 
         public void CreateRealized(Issue issue)
-        {
-            string actuals = "[";
-            foreach (string label in issue.KPIs.Realized)
-            {
-                actuals += label + ", ";
-            }
-            actuals += "]";
-            issue.KPIs.RealizedJSON = actuals;
+        {            
+            issue.KPIs.RealizedJSON = JsonConvert.SerializeObject(issue.KPIs.Realized);
         }
     }
 }

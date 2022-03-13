@@ -23,5 +23,6 @@ namespace DotJira
         public string Parent { get; set; }
 
         public KPI KPIs { get; set; }
+        public string KPIJson { get; internal set; }
     }
 }

@@ -56,7 +56,7 @@ namespace DotJira
         public static Issue findIssue(string issueKey, List<Issue> issues)
         {
                 Issue issue = new();
-                issue = issues.Find(i => i.Key.Equals(issueKey)); //search in tribe objectives
+                issue = issues.Find(i => i.Key.Equals(issueKey, StringComparison.OrdinalIgnoreCase)); //search in tribe objectives
                 if (issue == null)
                 {
                     foreach (Issue tribeObj in issues)
@@ -129,7 +129,8 @@ namespace DotJira
                 "OR issueFunction in linkedIssuesOf('Key = {0}', 'implements') " +
                 "OR issueFunction in issuesInEpics(\"issueFunction in linkedIssuesOf('Key = {0}', 'is implemented by')\")" +
                 "OR issueFunction in portfolioParentsOf('Key = {0}') " +
-                "OR Key = {0}", issueKey);
+                "OR Key = {0} " +
+                "ORDER BY rank ASC", issueKey);
 
             List<Issue> issues = GetIssues(jql);            
             if (issues != null)

@@ -8,7 +8,7 @@ namespace DotJira
 {
    public class KPI
     {
-        internal string budgetsJSON;
+        
 
         public List<string> Periods { get; set; }
         public List<string> Budgets { get; set; }

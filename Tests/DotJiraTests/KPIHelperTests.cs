@@ -48,37 +48,37 @@ namespace DotJira
         }
 
 
-        [Test]
-        public void buildLabelJson()
-        {
-            Issue parent = before();
-            kPIHelper.ParseKPIs(new List<Issue> { parent });
+        //[Test]
+        //public void buildLabelJson()
+        //{
+        //    Issue parent = before();
+        //    kPIHelper.ParseKPIs(new List<Issue> { parent });
 
-            kPIHelper.CreateLabels(child);
-            Assert.AreEqual("[jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, ]", child.KPIs.LabelsJSON);
-        }
-
-
-        [Test]
-        public void buildBudgetJson()
-        {
-            Issue parent = before();
-            kPIHelper.ParseKPIs(new List<Issue> { parent });
-
-            kPIHelper.CreateBudgets(child);
-            Assert.AreEqual("[0,001, 0,002, 0,003, 0,004, 0,006, 0,008, 0,008, 0,011, 0,013, 0,015, 0,017, 0,020, ]", child.KPIs.BudgetsJSON);
-        }
+        //    kPIHelper.CreateLabels(child);
+        //    Assert.AreEqual("[jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, ]", child.KPIs.LabelsJSON);
+        //}
 
 
-        [Test]
-        public void buildRealizedJson()
-        {
-            Issue parent = before();
-            kPIHelper.ParseKPIs(new List<Issue> { parent });
+        //[Test]
+        //public void buildBudgetJson()
+        //{
+        //    Issue parent = before();
+        //    kPIHelper.ParseKPIs(new List<Issue> { parent });
 
-            kPIHelper.CreateRealized(child);
-            Assert.AreEqual("[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ]", child.KPIs.RealizedJSON);
-        }
+        //    kPIHelper.CreateBudgets(child);
+        //    Assert.AreEqual("[0,001, 0,002, 0,003, 0,004, 0,006, 0,008, 0,008, 0,011, 0,013, 0,015, 0,017, 0,020, ]", child.KPIs.BudgetsJSON);
+        //}
+
+
+        //[Test]
+        //public void buildRealizedJson()
+        //{
+        //    Issue parent = before();
+        //    kPIHelper.ParseKPIs(new List<Issue> { parent });
+
+        //    kPIHelper.CreateRealized(child);
+        //    Assert.AreEqual("[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ]", child.KPIs.RealizedJSON);
+        //}
 
     }
 }
