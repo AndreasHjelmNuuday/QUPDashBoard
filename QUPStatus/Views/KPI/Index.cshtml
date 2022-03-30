@@ -4,10 +4,10 @@
 
 <script>
 
-    function createGraph(key, labels, realized, budgets){
+    function createGraph(key, labels, realized, budgets, chartType){
          ctx = document.getElementById(key).getContext('2d');
                     myChart = new Chart(ctx, {
-                            type: 'bar',
+                            type: chartType,
                         data: {
                             labels: labels,
 
@@ -53,22 +53,30 @@
     @foreach (Issue parent in Model.Issues)
     {
 
-    <div style="position: relative; max-height:fit-content(); float:left;">
-        <div style="text-wrap:none; width: 400px;"><H2>@parent.Fields.Summary</H2></div>
+    <div style="position: relative; height: 300px; float:left;">
+        <div style="overflow-wrap: break-word; writing-mode: vertical-rl; text-orientation: mixed; float: left; padding-top:20px; background-color:#@parent.Fields.KeyResult1; color: #@parent.Fields.KeyResult2; width:50px; height:100%; "><b>@parent.Fields.Summary</b></div>
         <div style="float:left;">
             @foreach (Issue child in parent.Children)
             {
-                <div style="margin-right: 20px; position: relative; float: left; max-height:fit-content(); max-width:fit-content()">
-                    <div style="height: 40px; width: 400px;"><a>@child.Fields.Summary</a></div>
-                    <div style="width: 400px; height: fit-content(); ">
+                <div style=" padding-right: 20px; padding-left:20px; position: relative; float: left;max-width:fit-content()">
+                    <div style="height:100px; max-width: 300px; overflow-wrap: break-word;"><a>@child.Fields.Summary</a></div>
+                    <div style="width: 380px; height: fit-content(); ">
                         <canvas id="@child.Key"></canvas>
                     </div>
+                    @{
+                        string chartType = "'bar'";
+
+                        if (child.Fields.KeyResult1 != null)
+                        {
+                            chartType = child.Fields.KeyResult1;
+                        }
+                    }
                     <script>
-                        createGraph("@child.Key", @Html.Raw(child.KPIs.LabelsJSON), @Html.Raw(child.KPIs.RealizedJSON),@Html.Raw(child.KPIs.BudgetsJSON));
+                        createGraph("@child.Key", @Html.Raw(child.KPIs.LabelsJSON), @Html.Raw(child.KPIs.RealizedJSON),@Html.Raw(child.KPIs.BudgetsJSON),@Html.Raw(chartType));
                     </script>
                 </div>
             }
-        </div>
+        </div>        
     </div>
     }
 </div>
