@@ -53,20 +53,22 @@
     @foreach (Issue parent in Model.Issues)
     {
 
-    <div style="position: relative; max-width:fit-content(); float:left; margin-right: 20px;" >
-        <div><H1>@parent.Fields.Summary</H1></div>
-        @foreach (Issue child in parent.Children)
-        {           
-    <div style="position: relative; height:fit-content(); max-width: 400px">
-        <div style="height: 40px;"><a>@child.Fields.Summary</a></div>
-        <div style="max-width: 400px; max-height: 400px; ">
-            <canvas id="@child.Key"></canvas>
+    <div style="position: relative; max-height:fit-content(); float:left;">
+        <div style="text-wrap:none; width: 400px;"><H2>@parent.Fields.Summary</H2></div>
+        <div style="float:left;">
+            @foreach (Issue child in parent.Children)
+            {
+                <div style="margin-right: 20px; position: relative; float: left; max-height:fit-content(); max-width:fit-content()">
+                    <div style="height: 40px; width: 400px;"><a>@child.Fields.Summary</a></div>
+                    <div style="width: 400px; height: fit-content(); ">
+                        <canvas id="@child.Key"></canvas>
+                    </div>
+                    <script>
+                        createGraph("@child.Key", @Html.Raw(child.KPIs.LabelsJSON), @Html.Raw(child.KPIs.RealizedJSON),@Html.Raw(child.KPIs.BudgetsJSON));
+                    </script>
+                </div>
+            }
         </div>
-        <script>
-                createGraph("@child.Key", @Html.Raw(child.KPIs.LabelsJSON), @Html.Raw(child.KPIs.RealizedJSON),@Html.Raw(child.KPIs.BudgetsJSON));
-        </script>
     </div>
-                }
-            </div>   
     }
 </div>
