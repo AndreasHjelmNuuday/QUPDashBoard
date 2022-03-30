@@ -53,7 +53,7 @@
     @foreach (Issue parent in Model.Issues)
     {
 
-    <div style="position: relative; height: 300px; float:left;">
+    <div style="position: relative; height: 300px; float:left; border:1px solid lightgray; ">
         <div style="overflow-wrap: break-word; writing-mode: vertical-rl; text-orientation: mixed; float: left; padding-top:20px; background-color:#@parent.Fields.KeyResult1; color: #@parent.Fields.KeyResult2; width:50px; height:100%; "><b>@parent.Fields.Summary</b></div>
         <div style="float:left;">
             @foreach (Issue child in parent.Children)
