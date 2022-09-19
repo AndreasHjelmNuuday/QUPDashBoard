@@ -165,7 +165,7 @@
                 padding-left: 2px;
                 background: @colorCardBasedOnRAG(parent.Fields.RAG);
                 ">
-                        <!-- <img src="@parent.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" />--> <a href="https://jira.tdc.dk/browse/@parent.Key" style="color: black; ">@parent.Key</a>
+                        <!-- <img src="@parent.Fields.Type.IconUrl" style="border: 1px solid black; border-radius:4px;" />--> <a href="@Credentials.JIRA_URL/browse/@parent.Key" style="color: black; ">@parent.Key</a>
                     </div>
                     <div style="        background: @colorStatus(parent);
                 padding-left: 2px;
@@ -256,7 +256,7 @@
                             <!--<img src="@child.Fields.Type.IconUrl"
                                  style="border: 1px solid black;
                                     border-radius: 4px;" />-->
-                            <a href="https://jira.tdc.dk/browse/@child.Key" style="color: black; ">@child.Key</a>
+                            <a href="@Credentials.JIRA_URL/browse/@child.Key" style="color: black; ">@child.Key</a>
                         </div>
                         <div style="
                         background:@colorStatus(child);

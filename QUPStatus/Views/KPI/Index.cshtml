@@ -53,12 +53,12 @@
     {
 
         <div style="position: relative; height: 300px; float:left; border:1px solid lightgray; ">
-            <div style="overflow-wrap: break-word; writing-mode: vertical-rl; text-orientation: mixed; float: left; padding-top:20px; background-color:@parent.Fields.RAGComment; width:50px; height:100%; "><a style="color:black;" href="https://jira.tdc.dk/browse/@parent.Key">@parent.Fields.Summary</a></div>
+            <div style="overflow-wrap: break-word; writing-mode: vertical-rl; text-orientation: mixed; float: left; padding-top:20px; background-color:@parent.Fields.RAGComment; width:50px; height:100%; "><a style="color:black;" href="@Credentials.JIRA_URL/browse/@parent.Key">@parent.Fields.Summary</a></div>
             <div style="float:left;">
                 @foreach (Issue child in parent.Children)
                 {
                     <div style=" padding-right: 20px; padding-left:20px; position: relative; float: left;max-width:fit-content()">
-                        <div style="height:100px; max-width: 300px; overflow-wrap: break-word;"><a style="color:black;"href="https://jira.tdc.dk/browse/@child.Key">@child.Fields.Summary</a></div>
+                        <div style="height:100px; max-width: 300px; overflow-wrap: break-word;"><a style="color:black;"href="@Credentials.JIRA_URL/browse/@child.Key">@child.Fields.Summary</a></div>
                         <div style="width: 380px; height: fit-content(); ">
                             <canvas id="@child.Key"></canvas>
                         </div>
