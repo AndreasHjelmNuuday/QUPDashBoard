@@ -26,6 +26,9 @@ namespace DotJira
         [JsonProperty(Constants.RAG_CUSTOM_FIELD_ID)]
         public RAG RAG { get; set; }
 
+        [JsonProperty(Constants.RAG_COMMENT_CUSTOM_FIELD_ID)]
+        public string RAGComment { get; set; }
+
         [JsonProperty(Constants.ISSUE_TYPE_ID)]
         public IssueType Type { get; set; }
 
@@ -40,8 +43,6 @@ namespace DotJira
 
         [JsonProperty(Constants.KEY_RESULT_4_CUSTOM_FIELD_ID)]
         public string KeyResult4 { get; set; }
-
-
 
         [JsonProperty(Constants.PARENT_CUSTOM_FIELD_ID)]
         public string Parent { get; set; }

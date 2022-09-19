@@ -36,6 +36,7 @@ namespace DotJira
                 Constants.DESCRIPTION_FIELD_ID,
                 Constants.TEAM_CUSTOM_FIELD_ID,
                 Constants.RAG_CUSTOM_FIELD_ID,
+                Constants.RAG_COMMENT_CUSTOM_FIELD_ID,
                 Constants.PARENT_CUSTOM_FIELD_ID,
                 Constants.ISSUE_TYPE_ID,
                 Constants.KEY_RESULT_1_CUSTOM_FIELD_ID,
