@@ -34,5 +34,11 @@ namespace DotJira
         public const string LINK_TYPE_IMPLEMENTATION_ID = "Implementation";
 
         public const string ASSIGNEE_ID = "assignee";
+
+        public static string SUMMARY_FIELD_ID = "summary";
+
+        public static string ISSUE_LINKS_FIELD_ID = "issuelinks";
+
+        public static string STATUS_FIELD_ID = "status";
     }
 }
