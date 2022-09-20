@@ -103,11 +103,11 @@ namespace DotJira
         {
             String jql = String.Format(
                 "project = {0} " +
-                "AND (issueFunction in portfolioChildrenOf(\"Team = {2} AND QUP = '{1}'\") " +
+                "AND issueFunction in portfolioChildrenOf(\"Team = {2} AND QUP = '{1}'\") " +
                 "OR Team = {2} AND QUP='{1}' " +
                 "OR issueFunction in linkedIssuesOf(\"Team = {2} AND QUP = '{1}'\", 'is implemented by') " +
                 "OR issueFunction in linkedIssuesOf(\"Team = {2} AND QUP = '{1}'\", 'implements') " +
-                "OR issueFunction in issuesInEpics(\"issueFunction in portfolioChildrenOf(\\\"Team = {2} AND QUP = '{1}'\\\")\")) " +
+                "OR issueFunction in issuesInEpics(\"issueFunction in portfolioChildrenOf(\\\"Team = {2} AND QUP = '{1}'\\\")\")" +
                 "OR issueFunction in issuesInEpics(\"issueFunction in linkedIssuesOf(\\\"Team = {2} AND QUP = '{1}'\\\", 'is implemented by')\")" +
                 " ORDER BY rank ASC", project, quarter, team);
             List<Issue> issues = GetIssues(jql);
