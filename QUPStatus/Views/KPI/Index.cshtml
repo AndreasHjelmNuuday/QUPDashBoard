@@ -48,11 +48,18 @@
     }
 
 </script>
+
+<script>//refresh every minute
+    function timedRefresh(timeoutPeriod) {
+        setTimeout("location.reload(true);", timeoutPeriod);
+    }
+
+    window.onload = timedRefresh(60000);</script>
 <div style="margin-left:20px;">
     @foreach (Issue parent in Model.Issues)
     {
 
-        <div style="position: relative; height: 300px; float:left; border:1px solid lightgray; ">
+        <div style="position: relative; height: 300px; float:left;">
             <div style="overflow-wrap: break-word; writing-mode: vertical-rl; text-orientation: mixed; float: left; padding-top:20px; background-color:@parent.Fields.RAGComment; width:50px; height:100%; "><a style="color:black;" href="@Credentials.JIRA_URL/browse/@parent.Key">@parent.Fields.Summary</a></div>
             <div style="float:left;">
                 @foreach (Issue child in parent.Children)
