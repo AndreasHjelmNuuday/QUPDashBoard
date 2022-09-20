@@ -11,7 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:44344/KPI?IssueKeys=MUSIC-12931&IssueKeys=Music-12943&issueKeys=MUSIC-13119&issueKeys=MUSIC-13120&issueKeys=MUSIC-13121&issueKeys=MUSIC-13122",
+      "launchUrl": "https://localhost:44344/Home/Index?quarter=2022%20q3",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"

@@ -24,7 +24,7 @@
                                 },
 
                                 {
-                        label: ['Budget'],
+                        label: ['budget'],
                                     data:  budgets,
                                     backgroundColor: [
                                         'rgba(173,216,230, 0.2)'
@@ -48,38 +48,29 @@
     }
 
 </script>
-
-<script>
-    //refresh every minute
-    function timedRefresh(timeoutPeriod) {
-        setTimeout("location.reload(true);", timeoutPeriod);
-    }
-
-    window.onload = timedRefresh(60000);
-
-</script>
-<div style="margin-left:20px; position: absolute; top:40px; left:20px;">
+<div style="margin-left:20px;">
     @foreach (Issue parent in Model.Issues)
     {
-    <div style="position: relative; height: 300px; float:left; border: 0px solid lightgrey;">
-        <div style="overflow-wrap: break-word; writing-mode: vertical-rl; text-align:center; float: left; background-color:#@parent.Fields.KeyResult1; color: #@parent.Fields.KeyResult2; width:50px; height:100%; "><b style="margin: auto;">@parent.Fields.Summary</b></div>
-        
-            @foreach (Issue child in parent.Children)
-            {
-                <div style=" padding-right: 20px; padding-left:20px; position: relative; float: left;max-width:fit-content()">
-                    <div style="height:100px; max-width: 300px; overflow-wrap: break-word;"><a href="https://jira.tdc.dk/browse/@child.Key" style="color: black; ">@child.Fields.Summary</a></div>
-                    <div style="width: 350px; height: fit-content(); ">
-                        <canvas id="@child.Key"></canvas>
+
+        <div style="position: relative; height: 300px; float:left; border:1px solid lightgray; ">
+            <div style="overflow-wrap: break-word; writing-mode: vertical-rl; text-orientation: mixed; float: left; padding-top:20px; background-color:@parent.Fields.RAGComment; width:50px; height:100%; "><a style="color:black;" href="@Credentials.JIRA_URL/browse/@parent.Key">@parent.Fields.Summary</a></div>
+            <div style="float:left;">
+                @foreach (Issue child in parent.Children)
+                {
+                    <div style=" padding-right: 20px; padding-left:20px; position: relative; float: left;max-width:fit-content()">
+                        <div style="height:100px; max-width: 300px; overflow-wrap: break-word;"><a style="color:black;"href="@Credentials.JIRA_URL/browse/@child.Key">@child.Fields.Summary</a></div>
+                        <div style="width: 380px; height: fit-content(); ">
+                            <canvas id="@child.Key"></canvas>
+                        </div>
+                        @{
+                            string chartType = "'bar'";
+                        }
+                        <script>
+                    createGraph("@child.Key", @Html.Raw(child.KPIs.LabelsJSON), @Html.Raw(child.KPIs.RealizedJSON),@Html.Raw(child.KPIs.BudgetsJSON),@Html.Raw(chartType));
+                        </script>
                     </div>
-                    @{
-                        string chartType = "'bar'";
-                    }
-                    <script>
-                        createGraph("@child.Key", @Html.Raw(child.KPIs.LabelsJSON), @Html.Raw(child.KPIs.RealizedJSON),@Html.Raw(child.KPIs.BudgetsJSON),@Html.Raw(chartType));
-                    </script>
-                </div>
-            }
-        
-    </div><br />
+                }
+            </div>
+        </div>
     }
-</div> 
+</div>

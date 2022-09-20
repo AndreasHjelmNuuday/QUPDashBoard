@@ -32,10 +32,11 @@ namespace DotJira
         {
             Connect();
             System.Collections.Generic.List<string> fields = new(new string[] {
-                "summary",
+                Constants.SUMMARY_FIELD_ID,
                 Constants.DESCRIPTION_FIELD_ID,
                 Constants.TEAM_CUSTOM_FIELD_ID,
                 Constants.RAG_CUSTOM_FIELD_ID,
+                Constants.RAG_COMMENT_CUSTOM_FIELD_ID,
                 Constants.PARENT_CUSTOM_FIELD_ID,
                 Constants.ISSUE_TYPE_ID,
                 Constants.KEY_RESULT_1_CUSTOM_FIELD_ID,
@@ -44,8 +45,8 @@ namespace DotJira
                 Constants.KEY_RESULT_4_CUSTOM_FIELD_ID,
                 Constants.EPIC_LINK_CUSTOM_FIELD_ID,
                 Constants.ASSIGNEE_ID,
-                "issuelinks",
-                "status"
+                Constants.ISSUE_LINKS_FIELD_ID,
+                Constants.STATUS_FIELD_ID
             });
 
             string statusCode;
