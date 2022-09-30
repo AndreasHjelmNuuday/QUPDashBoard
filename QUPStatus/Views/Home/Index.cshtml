@@ -190,7 +190,7 @@
                     </div>
                 </div>
             </div>
-            @if (parent.Fields.Type.Name.Equals("Tribe Objective") || parent.Fields.Type.Name.Equals("Squad Objective"))
+            @if (parent.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_TRIBE_OBJECTIVE) || parent.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_SQUAD_OBJECTIVE))
             {
                 <div style="
             border: solid black;
@@ -265,7 +265,7 @@
                                 font-size: 16px;
                                 padding-right: 8px;
                                 overflow-wrap: break-word;">
-                                @if (child.Fields.Type.Name.Equals("Tribe Objective") || child.Fields.Type.Name.Equals("Squad Objective") || child.Fields.Type.Name.Equals("Epic"))
+                                @if (child.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_TRIBE_OBJECTIVE) || child.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_SQUAD_OBJECTIVE) || child.Fields.Type.Name.Equals("Epic"))
                                 {
                                     <a style="color: black;" href="/Home/Index?issueKey=@child.Key">
                                         @child.Fields.Summary
@@ -283,7 +283,7 @@
                         bottom:20px;
                         right: 2px;
                         ">
-                            @if (child.Fields.Type.Name.Equals("Tribe Objective") || child.Fields.Type.Name.Equals("Squad Objective"))
+                            @if (child.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_TRIBE_OBJECTIVE) || child.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_SQUAD_OBJECTIVE))
                             {
                                 <a href="/Home/Index?team=@child.Fields.Team&quarter=@Model.Quarter">
                                     @translateTeamName(child)
@@ -303,7 +303,7 @@
                         bottom:2px;
                         right: 2px;
                         ">
-                            @if (child.Fields.Type.Name.ToLower().Equals("tribe objective") || child.Fields.Type.Name.ToLower().Equals("squad objective") || child.Fields.Type.Name.ToLower().Equals("epic"))
+                            @if (child.Fields.Type.Name.ToLower().Equals(Constants.ISSUE_TYPE_TRIBE_OBJECTIVE) || child.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_SQUAD_OBJECTIVE) || child.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_EPIC))
                             {
                                 noOfChildren = child.Children.Count + child.IsImplementedBy.Count;
 

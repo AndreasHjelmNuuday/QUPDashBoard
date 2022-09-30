@@ -167,7 +167,7 @@ namespace DotJira
                     {
                         squadObjectives.Add(issue);
                     }
-                    else if (issue.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_Epic))
+                    else if (issue.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_EPIC))
                     {
                         epics.Add(issue);
                     }
