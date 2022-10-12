@@ -21,7 +21,7 @@ namespace DotJira
         public Assignee Assignee { get; set; }
 
         [JsonProperty(Constants.TEAM_CUSTOM_FIELD_ID)]        
-        public string Team { get; set; }
+        public Team Team { get; set; }
 
         [JsonProperty(Constants.RAG_CUSTOM_FIELD_ID)]
         public RAG RAG { get; set; }

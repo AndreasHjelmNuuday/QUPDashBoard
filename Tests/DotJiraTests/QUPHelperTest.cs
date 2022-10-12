@@ -210,7 +210,7 @@ namespace DotJira
             foreach (Issue tribeObjective in issues)
             {
                 Assert.AreEqual(tribeObjective.Fields.Type.Name, "Tribe Objective");
-                if (tribeObjective.Children != null)
+                if (tribeObjective.Children != null)x
                 {
                     foreach (Issue squadObjective in tribeObjective.Children)
                     {

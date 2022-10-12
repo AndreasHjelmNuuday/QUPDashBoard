@@ -81,33 +81,36 @@
     string translateTeamName(Issue issue)
     {
         String team = "";
-        switch (issue.Fields.Team)
+        if (issue.Fields.Team != null)
         {
-            case "427":
-                team = "MOP";
-                break;
-            case "426":
-                team = "GetOn";
-                break;
-            case "428":
-                team = "PJ";
-                break;
-            case "429":
-                team = "MM";
-                break;
-            case "454":
-                team = "RAM";
-                break;
-            case "1078":
-                team = "Customer Success";
-                break;
-            case "455":
-                team = "SexyBack";
-                break;
+            switch (issue.Fields.Team.id)
+            {
+                case "427":
+                    team = "MOP";
+                    break;
+                case "426":
+                    team = "GetOn";
+                    break;
+                case "428":
+                    team = "PJ";
+                    break;
+                case "429":
+                    team = "MM";
+                    break;
+                case "454":
+                    team = "RAM";
+                    break;
+                case "1078":
+                    team = "Customer Success";
+                    break;
+                case "455":
+                    team = "SexyBack";
+                    break;
+            }
         }
         return team;
     }
-}
+    }
 @{
     string getChildName(Issue issue)
     {
