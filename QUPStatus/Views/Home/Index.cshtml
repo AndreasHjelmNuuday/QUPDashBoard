@@ -183,7 +183,14 @@
                         bottom:20px;
                         right: 2px;
                         ">
-                        <a href="/Home/Index?team=@parent.Fields.Team&quarter=@Model.Quarter">
+                        @{
+                            string teamId = "";
+                            if (@parent.Fields.Team != null)
+                            {
+                                teamId= parent.Fields.Team.id;
+                                }
+                            }
+                        <a href="/Home/Index?team=@teamId&quarter=@Model.Quarter">
                             @translateTeamName(parent)
                         </a>
 
@@ -288,17 +295,23 @@
                         ">
                             @if (child.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_TRIBE_OBJECTIVE) || child.Fields.Type.Name.Equals(Constants.ISSUE_TYPE_SQUAD_OBJECTIVE))
                             {
-                                <a href="/Home/Index?team=@child.Fields.Team&quarter=@Model.Quarter">
-                                    @translateTeamName(child)
-                                </a>
-                            }
-                            else
-                            {
-                                if (child.Fields.Assignee != null)
-                                {
-                                    @child.Fields.Assignee.DisplayName
+                                
+                                    teamId = "";
+                                    if (child.Fields.Team != null)
+                                    {
+                                        teamId= child.Fields.Team.id;
+                                    }
+                                    <a href="/Home/Index?team=@teamId&quarter=@Model.Quarter">
+                                        @translateTeamName(child)
+                                    </a>
                                 }
-                            }
+                                else
+                                {
+                                    if (child.Fields.Assignee != null)
+                                    {
+                                        @child.Fields.Assignee.DisplayName
+                                    }
+                                }
 
                         </div>
                         <div style="
